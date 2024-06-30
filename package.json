@@ -1,29 +1,25 @@
 {
-  "publisher": "antfu",
-  "name": "ext-name",
-  "displayName": "ext-name",
+  "publisher": "wmx",
+  "name": "snippet-manager",
+  "displayName": "Snippet Manager",
   "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@9.3.0",
   "description": "",
-  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "author": "Menthy Wu <wumengxuan0728@gmail.com>",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/antfu",
-  "homepage": "https://github.com/antfu/ext-name#readme",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/antfu/ext-name"
-  },
-  "bugs": {
-    "url": "https://github.com/antfu/ext-name/issues"
-  },
-  "sponsor": {
-    "url": "https://github.com/sponsors/antfu"
-  },
   "categories": [
     "Other"
   ],
   "main": "./dist/index.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "snippet-manager.showHelloWorld",
+        "title": "Hello World (React + Vite): Show"
+      }
+    ]
+  },
   "icon": "res/icon.png",
   "files": [
     "dist"
@@ -35,7 +31,8 @@
     "onStartupFinished"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --external vscode",
+    "install:all": "pnpm install && cd webview-ui && pnpm --ignore-workspace install",
+    "build": "tsup src/index.ts --external vscode && cd webview-ui && pnpm run build",
     "dev": "nr build --watch",
     "lint": "eslint .",
     "vscode:prepublish": "nr build",
