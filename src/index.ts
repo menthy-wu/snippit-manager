@@ -1,15 +1,12 @@
 import { commands, ExtensionContext, window } from "vscode";
-import { HelloWorldPanel } from "./panels/HelloWorldPanel";
+import { SidebarProvider } from "./SidebarProvider";
 
 export function activate(context: ExtensionContext) {
-  window.showInformationMessage("Hello");
-  const showHelloWorldCommand = commands.registerCommand(
-    "snippet-manager.showHelloWorld",
-    () => {
-      HelloWorldPanel.render(context.extensionUri);
-    },
+  const sidebarProvider = new SidebarProvider(context.extensionUri);
+  const sidebar = window.registerWebviewViewProvider(
+    "snippet-manager-sidebar",
+    sidebarProvider,
   );
 
-  // Add command to the extension context
-  context.subscriptions.push(showHelloWorldCommand);
+  context.subscriptions.push(sidebar);
 }

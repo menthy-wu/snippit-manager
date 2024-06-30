@@ -13,6 +13,26 @@
   ],
   "main": "./dist/index.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "snippet-manager-sidebar-view",
+          "title": "Snippets",
+          "icon": "assets/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "snippet-manager-sidebar-view": [
+        {
+          "type": "webview",
+          "id": "snippet-manager-sidebar",
+          "name": "snippet-manager",
+          "icon": "assets/icon.svg",
+          "contextualTitle": "snippet-manager"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "snippet-manager.showHelloWorld",
