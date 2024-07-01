@@ -33,6 +33,7 @@ export const saveSnippet = (snippet: SnippetProps) => {
   const newSnippet = JSON.stringify({
     [snippet.id]: snippet,
   });
+  console.log(newSnippet);
   vscode.postMessage({
     command: "save-snippet",
     body: newSnippet.toString(),

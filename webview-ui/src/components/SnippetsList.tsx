@@ -1,11 +1,19 @@
 import Snippet from "./SnippetButton";
-import snippets from "../../../data/snippet.json"; // This import style requires "esModuleInterop", see "side notes"
+import "../index.css";
+import snippets from "../../../data/snippet.json";
 import { SnippetProps } from "../utilities/types";
 
-const SnippetsList = ({ searchVal }: { searchVal: string }) => {
-  const filteredSnippets = Object.values(snippets).filter(
+const SnippetsList = ({
+  searchVal,
+  catogory,
+}: {
+  searchVal: string;
+  catogory: string;
+}) => {
+  const filteredSnippets = Object.values(snippets.snippets).filter(
     (snippets: SnippetProps) =>
-      snippets.title.toLocaleLowerCase().includes(searchVal),
+      snippets.title.toLocaleLowerCase().includes(searchVal) &&
+      snippets.catogory.includes(catogory),
   );
   return (
     <div className="flex flex-col gap-1">
@@ -17,6 +25,7 @@ const SnippetsList = ({ searchVal }: { searchVal: string }) => {
             description={snippet.description}
             snippet={snippet.snippet}
             id={snippet.id}
+            catogory={snippet.catogory}
           />
         ))
       ) : (

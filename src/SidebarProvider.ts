@@ -23,7 +23,7 @@ export class SidebarProvider implements WebviewViewProvider {
       "webview-ui",
       "build",
       "assets",
-      "actions.css",
+      "style.css",
     ]);
     const scriptUri = getUri(webviewView.webview, this._extensionUri, [
       "webview-ui",

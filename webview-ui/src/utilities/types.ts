@@ -3,4 +3,5 @@ export interface SnippetProps {
   description: string;
   snippet: string;
   id: string;
+  catogory: string;
 }

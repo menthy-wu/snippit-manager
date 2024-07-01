@@ -74,22 +74,21 @@ export const newSnippet = (extensionUri: Uri) => {
 
 export const deleteSnippet = async (uri: Uri, snippetID: string) => {
   const snippetUri = Uri.joinPath(uri, "data", "snippet.json");
-  let oldSnippets = JSON.parse("{}");
-
+  let snippetsData = JSON.parse("{}");
   if (fs.existsSync(snippetUri.fsPath)) {
     const data = await workspace.fs.readFile(snippetUri);
     const content = new TextDecoder().decode(data);
     try {
-      oldSnippets = JSON.parse(content);
+      snippetsData = JSON.parse(content);
     } catch (error) {
       window.showErrorMessage(
         "Error parsing JSON, please delete your snippets!",
       );
     }
 
-    delete oldSnippets[snippetID];
+    delete snippetsData.snippets[snippetID];
     const encodedContent = new TextEncoder().encode(
-      JSON.stringify(oldSnippets),
+      JSON.stringify(snippetsData),
     );
     await workspace.fs.writeFile(snippetUri, encodedContent);
     commands.executeCommand("workbench.action.webview.reloadWebviewAction");
@@ -102,13 +101,13 @@ export const saveSnippet = async (uri: Uri, snippet: string) => {
   const newSnippet = JSON.parse(snippet);
   const workspaceEdit = new WorkspaceEdit();
   const snippetUri = Uri.joinPath(uri, "data", "snippet.json");
-  let oldSnippets = JSON.parse("{}");
+  let snippetsData = JSON.parse("{}");
 
   if (fs.existsSync(snippetUri.fsPath)) {
     const data = await workspace.fs.readFile(snippetUri);
     const content = new TextDecoder().decode(data);
     try {
-      oldSnippets = JSON.parse(content);
+      snippetsData = JSON.parse(content);
     } catch (error) {
       window.showErrorMessage(
         "Error parsing JSON, please delete your snippets!",
@@ -116,15 +115,15 @@ export const saveSnippet = async (uri: Uri, snippet: string) => {
     }
 
     Object.keys(newSnippet).forEach((key) => {
-      oldSnippets[key] = newSnippet[key]; // Update or add entry
+      snippetsData.snippets[key] = newSnippet[key]; // Update or add entry
     });
   } else {
-    oldSnippets = newSnippet;
+    snippetsData = newSnippet;
     workspaceEdit.createFile(snippetUri, { ignoreIfExists: true });
     await workspace.applyEdit(workspaceEdit);
   }
 
-  const encodedContent = new TextEncoder().encode(JSON.stringify(oldSnippets));
+  const encodedContent = new TextEncoder().encode(JSON.stringify(snippetsData));
   await workspace.fs.writeFile(snippetUri, encodedContent);
   commands.executeCommand("workbench.action.webview.reloadWebviewAction");
 };

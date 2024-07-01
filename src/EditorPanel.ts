@@ -30,7 +30,7 @@ export class EditorPanel {
       "webview-ui",
       "build",
       "assets",
-      "actions.css",
+      "style.css",
     ]);
     const scriptUri = getUri(panel.webview, extensionUri, [
       "webview-ui",

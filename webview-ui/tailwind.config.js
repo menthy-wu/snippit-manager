@@ -6,6 +6,8 @@ export default {
       colors: {
         primary: "#af73d8",
         red: "#FF1E58",
+        "editor-input-background": "var(--vscode-tab-inactiveBackground)",
+        "sidebar-input-background": "var(--vscode-input-background)",
       },
     },
   },
