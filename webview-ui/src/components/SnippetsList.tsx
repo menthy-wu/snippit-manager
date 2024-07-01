@@ -3,7 +3,6 @@ import snippets from "../../../data/snippet.json"; // This import style requires
 import { SnippetProps } from "../utilities/types";
 
 const SnippetsList = ({ searchVal }: { searchVal: string }) => {
-  console.log(snippets);
   const filteredSnippets = Object.values(snippets).filter(
     (snippets: SnippetProps) =>
       snippets.title.toLocaleLowerCase().includes(searchVal),

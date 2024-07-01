@@ -23,7 +23,6 @@ export const newSnippept = () => {
   });
 };
 export const deleteSnippet = (snippetId: string) => {
-  console.log(snippetId);
   vscode.postMessage({
     command: "delete-snippet",
     body: snippetId,

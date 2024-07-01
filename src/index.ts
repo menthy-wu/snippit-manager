@@ -1,6 +1,7 @@
 import { ExtensionContext, commands, window } from "vscode";
 import { SidebarProvider } from "./SidebarProvider";
 import { EditorPanel } from "./EditorPanel";
+import { newSnippet } from "./utilities/setWebviewMessageListener";
 
 export function activate(context: ExtensionContext) {
   const sidebarProvider = new SidebarProvider(context.extensionUri);
@@ -11,7 +12,7 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(
     commands.registerCommand("snippet-manager.newSnippet", () => {
-      EditorPanel.render(context.extensionUri);
+      newSnippet(context.extensionUri);
     }),
   );
   context.subscriptions.push(sidebar);

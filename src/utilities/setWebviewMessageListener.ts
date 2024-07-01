@@ -10,6 +10,7 @@ import {
 import { EditorPanel } from "../EditorPanel";
 import * as fs from "fs";
 import { SnippetProps } from "../../webview-ui/src/utilities/types";
+import { title } from "process";
 
 export const setWebviewMessageListener = (
   webview: Webview,
@@ -60,11 +61,18 @@ export const editSnippet = (extensionUri: Uri, snippet: string) => {
   EditorPanel.postMessage(snippet);
 };
 export const newSnippet = (extensionUri: Uri) => {
-  EditorPanel.render(extensionUri);
+  const editor = window.activeTextEditor;
+  let snippet = { title: "New Snippet", description: "", snippet: "", id: "" };
+  if (editor) {
+    const selection = editor.selection;
+    const text = editor.document.getText(selection);
+    snippet.snippet = text;
+  }
+
+  editSnippet(extensionUri, JSON.stringify(snippet));
 };
 
 export const deleteSnippet = async (uri: Uri, snippetID: string) => {
-  console.log("deleteSnippet", snippetID);
   const snippetUri = Uri.joinPath(uri, "data", "snippet.json");
   let oldSnippets = JSON.parse("{}");
 
@@ -108,7 +116,6 @@ export const saveSnippet = async (uri: Uri, snippet: string) => {
     }
 
     Object.keys(newSnippet).forEach((key) => {
-      console.log(key);
       oldSnippets[key] = newSnippet[key]; // Update or add entry
     });
   } else {
