@@ -1,5 +1,5 @@
 {
-  "publisher": "wmx",
+  "publisher": "Menthy",
   "name": "snippet-manager",
   "displayName": "Snippet Manager",
   "version": "0.0.0",
@@ -40,6 +40,10 @@
       }
     ]
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/millionjs/oa-menthywu.git"
+  },
   "icon": "res/icon.png",
   "files": [
     "dist"
@@ -55,7 +59,7 @@
     "build": "tsup src/index.ts --external vscode && cd webview-ui && pnpm run build",
     "dev": "nr build --watch",
     "lint": "eslint .",
-    "vscode:prepublish": "nr build",
+    "vscode:prepublish": "pnpm install:all && nr build",
     "publish": "vsce publish --no-dependencies",
     "pack": "vsce package --no-dependencies",
     "test": "vitest",
