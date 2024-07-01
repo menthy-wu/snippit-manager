@@ -1,5 +1,13 @@
-import { Webview, Uri, window, Position } from "vscode";
+import {
+  Webview,
+  Uri,
+  window,
+  Position,
+  WorkspaceEdit,
+  workspace,
+} from "vscode";
 import { EditorPanel } from "../EditorPanel";
+import * as fs from "fs";
 
 export const setWebviewMessageListener = (
   webview: Webview,
@@ -7,21 +15,22 @@ export const setWebviewMessageListener = (
 ) => {
   webview.onDidReceiveMessage((message) => {
     const command = message.command;
+    const body = message.body;
     switch (command) {
       case "use-snippet":
-        useSnippet(command);
+        useSnippet(body);
         break;
       case "new-snippet":
         newSnippet(extensionUri);
         break;
       case "save-snippet":
-        saveSnippet(extensionUri);
+        saveSnippet(extensionUri, body);
         break;
     }
   });
 };
 
-const useSnippet = (snippet: string) => {
+export const useSnippet = (snippet: string) => {
   const editor = window.activeTextEditor;
   if (!editor) {
     window.showErrorMessage("Editor does not exist!");
@@ -37,12 +46,37 @@ const useSnippet = (snippet: string) => {
   });
 };
 
-const newSnippet = (extensionUri: Uri) => {
-  window.showInformationMessage("New Snippet!");
+export const newSnippet = (extensionUri: Uri) => {
   EditorPanel.render(extensionUri);
 };
 
-const saveSnippet = (uri: Uri) => {
-  window.showInformationMessage("save snippet!");
-  window.showInformationMessage(uri.path);
+export const saveSnippet = async (uri: Uri, snippet: string) => {
+  const newSnippet = JSON.parse(snippet);
+  const workspaceEdit = new WorkspaceEdit();
+  const snippetUri = Uri.joinPath(uri, "data", "snippet.json");
+  let oldSnippets = JSON.parse("{}");
+
+  if (fs.existsSync(snippetUri.fsPath)) {
+    const data = await workspace.fs.readFile(snippetUri);
+    const content = new TextDecoder().decode(data);
+    try {
+      oldSnippets = JSON.parse(content);
+    } catch (error) {
+      window.showErrorMessage(
+        "Error parsing JSON, please delete your snippets!",
+      );
+    }
+
+    Object.keys(newSnippet).forEach((key) => {
+      console.log(key);
+      oldSnippets[key] = newSnippet[key]; // Update or add entry
+    });
+  } else {
+    oldSnippets = newSnippet;
+    workspaceEdit.createFile(snippetUri, { ignoreIfExists: true });
+    await workspace.applyEdit(workspaceEdit);
+  }
+
+  const encodedContent = new TextEncoder().encode(JSON.stringify(oldSnippets));
+  await workspace.fs.writeFile(snippetUri, encodedContent);
 };

@@ -1,13 +1,15 @@
 import { LuPencil } from "react-icons/lu";
-import { editSnippet, useSnippet } from "../utilities/actions";
+import { editSnippet, callSnippet } from "../utilities/actions";
 import { SnippetProps } from "../utilities/types";
 
 const Snippet = (snippet: SnippetProps) => {
   return (
     <div className="group w-full flex items-center bg-white/5 border-white/5 border-[1px] hover:bg-primary/25 hover:border-primary hover:cursor-pointer rounded-lg duration-200 p-2">
-      <div className="w-full flex flex-col" onClick={useSnippet}>
+      <div
+        className="w-full flex flex-col"
+        onClick={() => callSnippet(snippet.snippet)}
+      >
         <div className="text-sm">{snippet.title}</div>
-        <div className="text-xs text-gray-400">{snippet.id}</div>
         <div className="text-xs text-gray-400">{snippet.description}</div>
       </div>
       <LuPencil

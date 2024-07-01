@@ -5,37 +5,38 @@ export const editSnippet = () => {
   console.log("Edit Clicked");
   vscode.postMessage({
     command: "edit-snippet",
-    text: "Edit the snippet",
+    body: "Edit the snippet",
   });
 };
 
-export const useSnippet = () => {
+export const callSnippet = (snippet: string) => {
   console.log("Snippet Clicked");
   vscode.postMessage({
     command: "use-snippet",
-    text: "Use the snippet",
+    body: snippet,
   });
 };
 
-export const newSnipept = () => {
+export const newSnippept = () => {
   console.log("Add New Snippet Clicked");
   vscode.postMessage({
     command: "new-snippet",
-    text: "Add a new snippet",
+    body: "Add a new snippet",
   });
 };
 export const deleteSnippet = () => {
   console.log("Delete Clicked");
   vscode.postMessage({
     command: "delete-snippet",
-    text: "Delete the snippet",
+    body: "Delete the snippet",
   });
 };
 export const saveSnippet = (snippet: SnippetProps) => {
-  console.log("Save Clicked");
-  console.log(snippet.title);
+  const newSnippet = JSON.stringify({
+    [snippet.title.toLowerCase().replace(/\s/g, "-")]: snippet,
+  });
   vscode.postMessage({
     command: "save-snippet",
-    text: "Save the snippet",
+    body: newSnippet.toString(),
   });
 };

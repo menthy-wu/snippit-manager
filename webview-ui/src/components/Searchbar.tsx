@@ -1,6 +1,6 @@
 import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react";
 import { IoIosSearch, IoIosAdd } from "react-icons/io";
-import { newSnipept } from "../utilities/actions";
+import { newSnippept } from "../utilities/actions";
 
 const Searchbar = () => {
   return (
@@ -12,7 +12,7 @@ const Searchbar = () => {
       </VSCodeTextField>
       <IoIosAdd
         className="text-gray-300 text-xl hover:bg-white/10 p-1 rounded hover:cursor-pointer"
-        onClick={newSnipept}
+        onClick={newSnippept}
       />
     </div>
   );
