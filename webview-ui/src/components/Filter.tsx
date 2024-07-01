@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
+import { LiaTimesSolid } from "react-icons/lia";
 
 const Filter = ({
   catogory,
@@ -29,10 +30,10 @@ const Filter = ({
       <div> catogory</div>
       <div
         ref={ref}
-        className="relative z-10 bg-sidebar-input-background flex items-center justify-center cursor-pointer"
+        className="relative z-10 bg-sidebar-input-background flex flex-grow w-full items-center justify-center cursor-pointer"
       >
         <input
-          className="px-4 focus:outline-none bg-transparent"
+          className="px-4 focus:outline-none bg-transparent w-full"
           type="text"
           value={catogory}
           onClick={() => setShow(true)}
@@ -58,6 +59,10 @@ const Filter = ({
           onClick={() => setShow(!show)}
         />
       </div>
+      <LiaTimesSolid
+        className="text-[color:var(--vscode-editorHint-foreground)] hover:cursor-pointer text-lg mx-2"
+        onClick={() => setCatogory("")}
+      />
     </div>
   );
 };

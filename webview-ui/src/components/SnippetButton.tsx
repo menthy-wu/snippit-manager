@@ -10,8 +10,11 @@ const Snippet = (snippet: SnippetProps) => {
         className="w-full flex flex-col"
         onClick={() => callSnippet(snippet.snippet)}
       >
-        <div className="text-sm text-[color:var(--vscode-sideBar-foreground)]">
-          {snippet.title}
+        <div className="flex items-center gap-2 w-full">
+          <div className="text-sm text-[color:var(--vscode-sideBar-foreground)]">
+            {snippet.title}
+          </div>
+          <div className="text-xs rounded text-primary">{snippet.catogory}</div>
         </div>
         <div className="text-xs text-[color:var(--vscode-editorHint-foreground)]">
           {snippet.description}

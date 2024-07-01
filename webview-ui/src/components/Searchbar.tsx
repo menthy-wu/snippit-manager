@@ -1,7 +1,7 @@
-import { MdOutlineCancel } from "react-icons/md";
 import { IoIosSearch, IoIosAdd } from "react-icons/io";
 import { newSnippept } from "../utilities/actions";
 import "../index.css";
+import { LiaTimesSolid } from "react-icons/lia";
 
 const Searchbar = ({
   searchVal,
@@ -20,7 +20,7 @@ const Searchbar = ({
           value={searchVal}
           onChange={(e) => setSearchVal(e.target.value)}
         />
-        <MdOutlineCancel
+        <LiaTimesSolid
           className="text-[color:var(--vscode-editorHint-foreground)] hover:cursor-pointer text-lg mx-2"
           onClick={() => setSearchVal("")}
         />
