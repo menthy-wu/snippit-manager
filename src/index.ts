@@ -1,4 +1,4 @@
-import { commands, ExtensionContext, window } from "vscode";
+import { ExtensionContext, window } from "vscode";
 import { SidebarProvider } from "./SidebarProvider";
 
 export function activate(context: ExtensionContext) {
