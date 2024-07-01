@@ -10,11 +10,15 @@ const SnippetsList = ({
   searchVal: string;
   catogory: string;
 }) => {
-  const filteredSnippets = Object.values(snippets.snippets).filter(
-    (snippets: SnippetProps) =>
-      snippets.title.toLocaleLowerCase().includes(searchVal) &&
-      snippets.catogory.includes(catogory),
-  );
+  // const filteredSnippets = []
+  console.log("hi", Object.values(snippets.snippets));
+  const filteredSnippets = Object.keys(snippets.snippets).length
+    ? (Object.values(snippets.snippets) as SnippetProps[]).filter(
+        (snippet: SnippetProps) =>
+          snippet.title.toLocaleLowerCase().includes(searchVal) &&
+          snippet.catogory.includes(catogory),
+      )
+    : [];
   return (
     <div className="flex flex-col gap-1">
       {filteredSnippets.length > 0 ? (

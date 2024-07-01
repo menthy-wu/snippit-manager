@@ -9,8 +9,6 @@ import {
 } from "vscode";
 import { EditorPanel } from "../EditorPanel";
 import * as fs from "fs";
-import { SnippetProps } from "../../webview-ui/src/utilities/types";
-import { title } from "process";
 
 export const setWebviewMessageListener = (
   webview: Webview,
