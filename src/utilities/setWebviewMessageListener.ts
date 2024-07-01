@@ -5,6 +5,7 @@ import {
   Position,
   WorkspaceEdit,
   workspace,
+  commands,
 } from "vscode";
 import { EditorPanel } from "../EditorPanel";
 import * as fs from "fs";
@@ -25,6 +26,10 @@ export const setWebviewMessageListener = (
         break;
       case "save-snippet":
         saveSnippet(extensionUri, body);
+        break;
+      case "delete-snippet":
+        console.log("delete-snippet");
+        deleteSnippet(extensionUri, body);
         break;
     }
   });
@@ -48,6 +53,33 @@ export const useSnippet = (snippet: string) => {
 
 export const newSnippet = (extensionUri: Uri) => {
   EditorPanel.render(extensionUri);
+};
+
+export const deleteSnippet = async (uri: Uri, snippetID: string) => {
+  const workspaceEdit = new WorkspaceEdit();
+  const snippetUri = Uri.joinPath(uri, "data", "snippet.json");
+  let oldSnippets = JSON.parse("{}");
+
+  if (fs.existsSync(snippetUri.fsPath)) {
+    const data = await workspace.fs.readFile(snippetUri);
+    const content = new TextDecoder().decode(data);
+    try {
+      oldSnippets = JSON.parse(content);
+    } catch (error) {
+      window.showErrorMessage(
+        "Error parsing JSON, please delete your snippets!",
+      );
+    }
+
+    delete oldSnippets[snippetID];
+    const encodedContent = new TextEncoder().encode(
+      JSON.stringify(oldSnippets),
+    );
+    await workspace.fs.writeFile(snippetUri, encodedContent);
+    commands.executeCommand("workbench.action.webview.reloadWebviewAction");
+  } else {
+    window.showErrorMessage("Cannot find file!");
+  }
 };
 
 export const saveSnippet = async (uri: Uri, snippet: string) => {
@@ -79,4 +111,5 @@ export const saveSnippet = async (uri: Uri, snippet: string) => {
 
   const encodedContent = new TextEncoder().encode(JSON.stringify(oldSnippets));
   await workspace.fs.writeFile(snippetUri, encodedContent);
+  commands.executeCommand("workbench.action.webview.reloadWebviewAction");
 };

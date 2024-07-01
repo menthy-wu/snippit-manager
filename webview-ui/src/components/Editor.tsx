@@ -6,6 +6,7 @@ const Editor = () => {
     title: "",
     description: "",
     snippet: "",
+    id: "",
   });
 
   return (

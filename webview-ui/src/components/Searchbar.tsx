@@ -4,7 +4,7 @@ import { newSnippept } from "../utilities/actions";
 
 const Searchbar = () => {
   return (
-    <div className="w-full flex items-center justify-between mb-2">
+    <div className="w-full flex items-center justify-between mb-2 sticky top-0">
       <VSCodeTextField className="w-full">
         <span className="" slot="start">
           <IoIosSearch className="text-gray-300 text-lg" />

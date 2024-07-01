@@ -1,5 +1,5 @@
-import { LuPencil } from "react-icons/lu";
-import { editSnippet, callSnippet } from "../utilities/actions";
+import { LuPencil, LuTrash } from "react-icons/lu";
+import { editSnippet, callSnippet, deleteSnippet } from "../utilities/actions";
 import { SnippetProps } from "../utilities/types";
 
 const Snippet = (snippet: SnippetProps) => {
@@ -12,10 +12,18 @@ const Snippet = (snippet: SnippetProps) => {
         <div className="text-sm">{snippet.title}</div>
         <div className="text-xs text-gray-400">{snippet.description}</div>
       </div>
-      <LuPencil
-        className="text-gray-300 text-lg group-hover:opacity-100 opacity-0 duration-200"
-        onClick={editSnippet}
-      />
+      <div>
+        <LuPencil
+          className="text-gray-300 text-base group-hover:opacity-100 opacity-0 duration-200 hover:text-primary"
+          onClick={editSnippet}
+        />
+        <LuTrash
+          className="text-gray-300 text-base group-hover:opacity-100 opacity-0 duration-200 hover:text-red"
+          onClick={() =>
+            deleteSnippet(snippet.title.toLowerCase().replace(/\s/g, "-"))
+          }
+        />
+      </div>
     </div>
   );
 };

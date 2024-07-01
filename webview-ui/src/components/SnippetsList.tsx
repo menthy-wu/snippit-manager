@@ -12,6 +12,7 @@ const SnippetsList = () => {
           title={snippet.title}
           description={snippet.description}
           snippet={snippet.snippet}
+          id={snippet.id}
         />
       ))}
     </div>
