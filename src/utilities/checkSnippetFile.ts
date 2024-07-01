@@ -8,10 +8,10 @@ export const checkSnippetFile = async (uri: Uri) => {
     const content = new TextDecoder().decode(data);
     const parsedJson = JSON.parse(content);
     parsedJson.snippets;
-    parsedJson.catagories;
+    parsedJson.categories;
   } catch (error) {
     const snippetsData = {
-      catagories: ["java", "react", "c++", "python"],
+      categories: ["java", "react", "c++", "python"],
       snippets: {},
     };
     workspaceEdit.createFile(snippetUri, { ignoreIfExists: true });

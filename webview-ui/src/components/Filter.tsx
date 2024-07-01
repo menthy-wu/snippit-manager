@@ -3,13 +3,13 @@ import { FaAngleDown } from "react-icons/fa6";
 import { LiaTimesSolid } from "react-icons/lia";
 
 const Filter = ({
-  catogory,
+  category,
   options,
-  setCatogory,
+  setcategory,
 }: {
-  catogory: string;
+  category: string;
   options: string[];
-  setCatogory: React.Dispatch<React.SetStateAction<string>>;
+  setcategory: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const ref = useRef<HTMLInputElement>(null);
   const [show, setShow] = useState<boolean>(false);
@@ -27,7 +27,7 @@ const Filter = ({
   }, [ref]);
   return (
     <div className=" w-full flex gap-2 items-center justify-center">
-      <div> catogory</div>
+      <div> category</div>
       <div
         ref={ref}
         className="relative z-10 bg-sidebar-input-background flex flex-grow w-full items-center justify-center cursor-pointer"
@@ -35,7 +35,7 @@ const Filter = ({
         <input
           className="px-4 focus:outline-none bg-transparent w-full"
           type="text"
-          value={catogory}
+          value={category}
           onClick={() => setShow(true)}
         />
         {show && (
@@ -45,7 +45,7 @@ const Filter = ({
                 className="px-2 py-1 hover:bg-primary/10 hover:cursor-pointer drop-shadow-lg"
                 key={index}
                 onClick={() => {
-                  setCatogory(option);
+                  setcategory(option);
                   setShow(false);
                 }}
               >
@@ -61,7 +61,7 @@ const Filter = ({
       </div>
       <LiaTimesSolid
         className="text-[color:var(--vscode-editorHint-foreground)] hover:cursor-pointer text-lg mx-2"
-        onClick={() => setCatogory("")}
+        onClick={() => setcategory("")}
       />
     </div>
   );

@@ -2,6 +2,12 @@ import { SnippetProps } from "./types";
 import { vscode } from "./vscode";
 import { v4 as uuidv4 } from "uuid";
 
+export const reload = () => {
+  vscode.postMessage({
+    command: "reload",
+  });
+};
+
 export const editSnippet = (snippet: SnippetProps) => {
   vscode.postMessage({
     command: "edit-snippet",
@@ -50,7 +56,7 @@ export const saveSnippet = (snippet: SnippetProps) => {
     });
     return;
   }
-  if (!snippet.catogory) snippet.catogory = "general";
+  if (!snippet.category) snippet.category = "general";
   if (!snippet.id) snippet.id = uuidv4();
   const newSnippet = JSON.stringify({
     [snippet.id]: snippet,

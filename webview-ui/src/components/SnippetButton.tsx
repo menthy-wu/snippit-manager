@@ -14,7 +14,7 @@ const Snippet = (snippet: SnippetProps) => {
           <div className="text-sm text-[color:var(--vscode-sideBar-foreground)]">
             {snippet.title}
           </div>
-          <div className="text-xs rounded text-primary">{snippet.catogory}</div>
+          <div className="text-xs rounded text-primary">{snippet.category}</div>
         </div>
         <div className="text-xs text-[color:var(--vscode-editorHint-foreground)]">
           {snippet.description}

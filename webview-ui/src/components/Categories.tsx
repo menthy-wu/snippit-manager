@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../index.css";
 import { SnippetProps } from "../utilities/types";
 
-const Dropdown = ({
+const Categories = ({
   snippet,
   options,
   setSnippet,
@@ -30,8 +30,9 @@ const Dropdown = ({
       <input
         className="relative w-full flex py-2 bg-editor-input-background px-4"
         type="text"
-        value={snippet.catogory}
+        value={snippet.category}
         onClick={() => setShow(true)}
+        onChange={(e) => setSnippet({ ...snippet, category: e.target.value })}
       />
       {show && (
         <div className="absolute bg-editor-input-background w-full">
@@ -40,7 +41,7 @@ const Dropdown = ({
               className="px-2 py-1 hover:bg-primary/10 hover:cursor-pointer drop-shadow-lg"
               key={index}
               onClick={() => {
-                setSnippet({ ...snippet, catogory: option });
+                setSnippet({ ...snippet, category: option });
                 setShow(false);
               }}
             >
@@ -53,4 +54,4 @@ const Dropdown = ({
   );
 };
 
-export default Dropdown;
+export default Categories;

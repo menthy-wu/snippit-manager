@@ -7,16 +7,16 @@ import snippets from "../../../data/snippet.json";
 
 const Sidebar = () => {
   const [searchVal, setSearchVal] = useState<string>("");
-  const [catogory, setCatogory] = useState<string>("");
+  const [category, setcategory] = useState<string>("");
   return (
     <div className="w-full h-full flex flex-col gap-2">
       <Searchbar searchVal={searchVal} setSearchVal={setSearchVal} />
       <Filter
-        catogory={catogory}
-        setCatogory={setCatogory}
-        options={snippets.catagories}
+        category={category}
+        setcategory={setcategory}
+        options={snippets.categories}
       />
-      <SnippetsList searchVal={searchVal} catogory={catogory} />
+      <SnippetsList searchVal={searchVal} category={category} />
     </div>
   );
 };

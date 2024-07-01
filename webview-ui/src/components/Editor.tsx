@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "../index.css";
 import { saveSnippet } from "../utilities/actions";
 import snippets from "../../../data/snippet.json";
-import Dropdown from "./Catogories";
+import Categories from "./Categories";
 import { SnippetProps } from "../utilities/types";
 
 const Editor = () => {
@@ -11,7 +11,7 @@ const Editor = () => {
     description: "",
     snippet: "",
     id: "",
-    catogory: "",
+    category: "",
   });
   const handleListener = (event: MessageEvent) => {
     const data = JSON.parse(event.data.body);
@@ -45,11 +45,11 @@ const Editor = () => {
           setSnippet({ ...snippet, description: e.target.value })
         }
       />
-      <label>Catogories</label>
-      <Dropdown
+      <label>categories</label>
+      <Categories
         snippet={snippet}
         setSnippet={setSnippet}
-        options={snippets.catagories}
+        options={snippets.categories}
       />
       <label>Snippet</label>
       <textarea

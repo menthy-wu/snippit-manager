@@ -38,6 +38,9 @@ export const setWebviewMessageListener = (
       case "invalid-snippet":
         window.showErrorMessage(`Invalid snippet: ${body}`);
         break;
+      case "reload":
+        commands.executeCommand("workbench.action.webview.reloadWebviewAction");
+        break;
     }
   });
 };
@@ -64,7 +67,13 @@ export const editSnippet = (extensionUri: Uri, snippet: string) => {
 };
 export const newSnippet = (extensionUri: Uri) => {
   const editor = window.activeTextEditor;
-  let snippet = { title: "New Snippet", description: "", snippet: "", id: "" };
+  let snippet = {
+    title: "New Snippet",
+    description: "",
+    snippet: "",
+    id: "",
+    category: "",
+  };
   if (editor) {
     const selection = editor.selection;
     const text = editor.document.getText(selection);
@@ -96,7 +105,7 @@ export const deleteSnippet = async (uri: Uri, snippetID: string) => {
   } else {
     window.showErrorMessage("Cannot find file!");
   }
-  // commands.executeCommand("workbench.action.reloadWindow");
+  commands.executeCommand("workbench.action.webview.reloadWebviewAction");
 };
 
 export const saveSnippet = async (uri: Uri, snippet: string) => {
@@ -118,6 +127,10 @@ export const saveSnippet = async (uri: Uri, snippet: string) => {
 
     Object.keys(newSnippet).forEach((key) => {
       snippetsData.snippets[key] = newSnippet[key]; // Update or add entry
+      console.log("ohhi", newSnippet[key].category);
+      if (!snippetsData.categories.includes(newSnippet[key].category)) {
+        snippetsData.categories.push(newSnippet[key].category);
+      }
     });
   } else {
     snippetsData = newSnippet;
@@ -127,6 +140,5 @@ export const saveSnippet = async (uri: Uri, snippet: string) => {
 
   const encodedContent = new TextEncoder().encode(JSON.stringify(snippetsData));
   await workspace.fs.writeFile(snippetUri, encodedContent);
-  // commands.executeCommand("workbench.action.reloadWindow");
-  // commands.executeCommand("workbench.action.webview.reloadWebviewAction");
+  commands.executeCommand("snippet-manager.newSnippet");
 };

@@ -5,16 +5,16 @@ import { SnippetProps } from "../utilities/types";
 
 const SnippetsList = ({
   searchVal,
-  catogory,
+  category,
 }: {
   searchVal: string;
-  catogory: string;
+  category: string;
 }) => {
   const filteredSnippets = Object.keys(snippets.snippets).length
     ? (Object.values(snippets.snippets) as SnippetProps[]).filter(
         (snippet: SnippetProps) =>
           snippet.title.toLocaleLowerCase().includes(searchVal) &&
-          snippet.catogory?.includes(catogory),
+          snippet.category?.includes(category),
       )
     : [];
   return (
@@ -27,7 +27,7 @@ const SnippetsList = ({
             description={snippet.description}
             snippet={snippet.snippet}
             id={snippet.id}
-            catogory={snippet.catogory}
+            category={snippet.category}
           />
         ))
       ) : (
