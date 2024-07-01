@@ -19,9 +19,7 @@ const Snippet = (snippet: SnippetProps) => {
         />
         <LuTrash
           className="text-gray-300 text-base group-hover:opacity-100 opacity-0 duration-200 hover:text-red"
-          onClick={() =>
-            deleteSnippet(snippet.title.toLowerCase().replace(/\s/g, "-"))
-          }
+          onClick={() => deleteSnippet(snippet.id)}
         />
       </div>
     </div>

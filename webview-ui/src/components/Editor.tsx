@@ -9,8 +9,8 @@ const Editor = () => {
     id: "",
   });
   const handleListener = (event: MessageEvent) => {
-    const data = JSON.parse(event.data);
-    console.log(data);
+    const data = JSON.parse(event.data.body);
+    setSnippet(data);
   };
   useEffect(() => {
     window.addEventListener("message", (event) => {

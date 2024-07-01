@@ -9,6 +9,7 @@ import {
 } from "vscode";
 import { EditorPanel } from "../EditorPanel";
 import * as fs from "fs";
+import { SnippetProps } from "../../webview-ui/src/utilities/types";
 
 export const setWebviewMessageListener = (
   webview: Webview,
@@ -29,8 +30,10 @@ export const setWebviewMessageListener = (
         saveSnippet(extensionUri, body);
         break;
       case "delete-snippet":
-        console.log("delete-snippet");
         deleteSnippet(extensionUri, body);
+        break;
+      case "edit-snippet":
+        editSnippet(extensionUri, body);
         break;
     }
   });
@@ -52,12 +55,16 @@ export const useSnippet = (snippet: string) => {
   });
 };
 
+export const editSnippet = (extensionUri: Uri, snippet: string) => {
+  EditorPanel.render(extensionUri);
+  EditorPanel.postMessage(snippet);
+};
 export const newSnippet = (extensionUri: Uri) => {
   EditorPanel.render(extensionUri);
 };
 
 export const deleteSnippet = async (uri: Uri, snippetID: string) => {
-  const workspaceEdit = new WorkspaceEdit();
+  console.log("deleteSnippet", snippetID);
   const snippetUri = Uri.joinPath(uri, "data", "snippet.json");
   let oldSnippets = JSON.parse("{}");
 

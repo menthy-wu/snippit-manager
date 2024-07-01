@@ -1,10 +1,11 @@
 import { SnippetProps } from "./types";
 import { vscode } from "./vscode";
+import { v4 as uuidv4 } from "uuid";
 
 export const editSnippet = (snippet: SnippetProps) => {
   vscode.postMessage({
     command: "edit-snippet",
-    body: snippet.toString(),
+    body: JSON.stringify(snippet).toString(),
   });
 };
 
@@ -29,7 +30,7 @@ export const deleteSnippet = (snippetId: string) => {
   });
 };
 export const saveSnippet = (snippet: SnippetProps) => {
-  snippet.id = snippet.title.toLowerCase().replace(/\s/g, "-");
+  if (!snippet.id) snippet.id = uuidv4();
   const newSnippet = JSON.stringify({
     [snippet.id]: snippet,
   });

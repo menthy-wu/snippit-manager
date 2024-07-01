@@ -5,6 +5,7 @@ import {
   window,
   Uri,
   ViewColumn,
+  commands,
 } from "vscode";
 import { getUri } from "./utilities/getUri";
 import { getHtmlForWebview } from "./utilities/getHtmlForWebview";
@@ -14,6 +15,13 @@ export class EditorPanel {
   public static currentPanel: EditorPanel | undefined;
   private readonly _panel: WebviewPanel;
   private _disposables: Disposable[] = [];
+  public static postMessage(message: any) {
+    if (this.currentPanel)
+      this.currentPanel._panel.webview.postMessage({
+        command: "loadSnippet",
+        body: message,
+      });
+  }
 
   private constructor(panel: WebviewPanel, extensionUri: Uri) {
     this._panel = panel;
