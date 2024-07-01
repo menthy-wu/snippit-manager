@@ -10,13 +10,11 @@ const SnippetsList = ({
   searchVal: string;
   catogory: string;
 }) => {
-  // const filteredSnippets = []
-  console.log("hi", Object.values(snippets.snippets));
   const filteredSnippets = Object.keys(snippets.snippets).length
     ? (Object.values(snippets.snippets) as SnippetProps[]).filter(
         (snippet: SnippetProps) =>
           snippet.title.toLocaleLowerCase().includes(searchVal) &&
-          snippet.catogory.includes(catogory),
+          snippet.catogory?.includes(catogory),
       )
     : [];
   return (

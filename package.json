@@ -17,7 +17,7 @@
       "activitybar": [
         {
           "id": "snippet-manager-sidebar-view",
-          "title": "Snippets",
+          "title": "Snippet Manager",
           "icon": "res/icon.svg"
         }
       ]
@@ -34,10 +34,6 @@
       ]
     },
     "commands": [
-      {
-        "command": "snippet-manager.showHelloWorld",
-        "title": "Hello World (React + Vite): Show"
-      },
       {
         "command": "snippet-manager.newSnippet",
         "title": "Add New Snippet"

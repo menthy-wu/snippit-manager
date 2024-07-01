@@ -29,11 +29,32 @@ export const deleteSnippet = (snippetId: string) => {
   });
 };
 export const saveSnippet = (snippet: SnippetProps) => {
+  if (!snippet.title) {
+    vscode.postMessage({
+      command: "invalid-snippet",
+      body: "no title",
+    });
+    return;
+  }
+  if (!snippet.snippet) {
+    vscode.postMessage({
+      command: "invalid-snippet",
+      body: "no snippet",
+    });
+    return;
+  }
+  if (!snippet.description) {
+    vscode.postMessage({
+      command: "invalid-snippet",
+      body: "no description",
+    });
+    return;
+  }
+  if (!snippet.catogory) snippet.catogory = "general";
   if (!snippet.id) snippet.id = uuidv4();
   const newSnippet = JSON.stringify({
     [snippet.id]: snippet,
   });
-  console.log(newSnippet);
   vscode.postMessage({
     command: "save-snippet",
     body: newSnippet.toString(),

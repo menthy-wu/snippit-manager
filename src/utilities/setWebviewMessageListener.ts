@@ -23,16 +23,20 @@ export const setWebviewMessageListener = (
         break;
       case "new-snippet":
         commands.executeCommand("snippet-manager.newSnippet");
-        // newSnippet(extensionUri);
         break;
       case "save-snippet":
         saveSnippet(extensionUri, body);
+
         break;
       case "delete-snippet":
         deleteSnippet(extensionUri, body);
+
         break;
       case "edit-snippet":
         editSnippet(extensionUri, body);
+        break;
+      case "invalid-snippet":
+        window.showErrorMessage(`Invalid snippet: ${body}`);
         break;
     }
   });
@@ -89,10 +93,10 @@ export const deleteSnippet = async (uri: Uri, snippetID: string) => {
       JSON.stringify(snippetsData),
     );
     await workspace.fs.writeFile(snippetUri, encodedContent);
-    commands.executeCommand("workbench.action.webview.reloadWebviewAction");
   } else {
     window.showErrorMessage("Cannot find file!");
   }
+  // commands.executeCommand("workbench.action.reloadWindow");
 };
 
 export const saveSnippet = async (uri: Uri, snippet: string) => {
@@ -123,5 +127,6 @@ export const saveSnippet = async (uri: Uri, snippet: string) => {
 
   const encodedContent = new TextEncoder().encode(JSON.stringify(snippetsData));
   await workspace.fs.writeFile(snippetUri, encodedContent);
-  commands.executeCommand("workbench.action.webview.reloadWebviewAction");
+  // commands.executeCommand("workbench.action.reloadWindow");
+  // commands.executeCommand("workbench.action.webview.reloadWebviewAction");
 };
