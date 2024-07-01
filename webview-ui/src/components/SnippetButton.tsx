@@ -15,7 +15,7 @@ const Snippet = (snippet: SnippetProps) => {
       <div>
         <LuPencil
           className="text-gray-300 text-base group-hover:opacity-100 opacity-0 duration-200 hover:text-primary"
-          onClick={editSnippet}
+          onClick={() => editSnippet(snippet)}
         />
         <LuTrash
           className="text-gray-300 text-base group-hover:opacity-100 opacity-0 duration-200 hover:text-red"

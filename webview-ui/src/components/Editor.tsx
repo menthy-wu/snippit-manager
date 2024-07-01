@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { saveSnippet } from "../utilities/actions";
 
 const Editor = () => {
@@ -8,7 +8,21 @@ const Editor = () => {
     snippet: "",
     id: "",
   });
+  const handleListener = (event: MessageEvent) => {
+    const data = JSON.parse(event.data);
+    console.log(data);
+  };
+  useEffect(() => {
+    window.addEventListener("message", (event) => {
+      handleListener(event);
+    });
 
+    return () => {
+      window.removeEventListener("message", (event) => {
+        handleListener(event);
+      });
+    };
+  }, []);
   return (
     <div>
       <label>Title</label>

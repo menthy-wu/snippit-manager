@@ -1,10 +1,10 @@
 import { SnippetProps } from "./types";
 import { vscode } from "./vscode";
 
-export const editSnippet = () => {
+export const editSnippet = (snippet: SnippetProps) => {
   vscode.postMessage({
     command: "edit-snippet",
-    body: "Edit the snippet",
+    body: snippet.toString(),
   });
 };
 

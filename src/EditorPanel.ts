@@ -67,22 +67,4 @@ export class EditorPanel {
       }
     }
   }
-
-  private _setWebviewMessageListener(webview: Webview) {
-    webview.onDidReceiveMessage(
-      (message: any) => {
-        const command = message.command;
-        const text = message.text;
-
-        switch (command) {
-          case "hello":
-            // Code that should run in response to the hello message command
-            window.showInformationMessage(text);
-            return;
-        }
-      },
-      undefined,
-      this._disposables,
-    );
-  }
 }

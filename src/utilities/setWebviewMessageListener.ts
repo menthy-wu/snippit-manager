@@ -22,7 +22,8 @@ export const setWebviewMessageListener = (
         useSnippet(body);
         break;
       case "new-snippet":
-        newSnippet(extensionUri);
+        commands.executeCommand("snippet-manager.newSnippet");
+        // newSnippet(extensionUri);
         break;
       case "save-snippet":
         saveSnippet(extensionUri, body);
