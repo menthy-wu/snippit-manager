@@ -1,16 +1,19 @@
-import { Uri, WorkspaceEdit, commands, workspace } from "vscode";
+import { Uri, Webview, WorkspaceEdit, commands, workspace } from "vscode";
 
-export const checkSnippetFile = async (uri: Uri) => {
+export const checkSnippetFile = async (uri: Uri, sidebar: Webview) => {
   const workspaceEdit = new WorkspaceEdit();
   const snippetUri = Uri.joinPath(uri, "data", "snippet.json");
+  let snippetsData = {};
   try {
     const data = await workspace.fs.readFile(snippetUri);
     const content = new TextDecoder().decode(data);
     const parsedJson = JSON.parse(content);
-    parsedJson.snippets;
-    parsedJson.categories;
+    snippetsData = {
+      categories: parsedJson.categories,
+      snippets: parsedJson.snippets,
+    };
   } catch (error) {
-    const snippetsData = {
+    snippetsData = {
       categories: ["java", "react", "c++", "python"],
       snippets: {},
     };
@@ -21,6 +24,6 @@ export const checkSnippetFile = async (uri: Uri) => {
       JSON.stringify(snippetsData),
     );
     await workspace.fs.writeFile(snippetUri, encodedContent);
-    commands.executeCommand("workbench.action.webview.reloadWebviewAction");
   }
+  sidebar.postMessage({ command: "reload-snippets", body: snippetsData });
 };

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import "../index.css";
 import { saveSnippet } from "../utilities/actions";
-import snippets from "../../../data/snippet.json";
 import Categories from "./Categories";
 import { SnippetProps } from "../utilities/types";
 
 const Editor = () => {
+  const [categories, setCategories] = useState<string[]>([]);
   const [snippet, setSnippet] = useState<SnippetProps>({
     title: "",
     description: "",
@@ -14,8 +14,13 @@ const Editor = () => {
     category: "",
   });
   const handleListener = (event: MessageEvent) => {
-    const data = JSON.parse(event.data.body);
-    setSnippet(data);
+    const data = event.data;
+    if (data.command === "reload-snippets") {
+      setCategories(data.body.categories);
+    }
+    if (data.command === "edit-snippet") {
+      setSnippet(data.body);
+    }
   };
   useEffect(() => {
     window.addEventListener("message", (event) => {
@@ -28,6 +33,7 @@ const Editor = () => {
       });
     };
   }, []);
+
   return (
     <div className="flex flex-col h-screen gap-2">
       <label>Title</label>
@@ -49,7 +55,7 @@ const Editor = () => {
       <Categories
         snippet={snippet}
         setSnippet={setSnippet}
-        options={snippets.categories}
+        options={categories}
       />
       <label>Snippet</label>
       <textarea

@@ -58,11 +58,11 @@ export const saveSnippet = (snippet: SnippetProps) => {
   }
   if (!snippet.category) snippet.category = "general";
   if (!snippet.id) snippet.id = uuidv4();
-  const newSnippet = JSON.stringify({
+  const newSnippet = {
     [snippet.id]: snippet,
-  });
+  };
   vscode.postMessage({
     command: "save-snippet",
-    body: newSnippet.toString(),
+    body: newSnippet,
   });
 };

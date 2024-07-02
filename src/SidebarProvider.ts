@@ -3,18 +3,21 @@ import { getNonce } from "./utilities/getNonce";
 import { getUri } from "./utilities/getUri";
 import { Uri, WebviewView, WebviewViewProvider, TextDocument } from "vscode";
 import { setWebviewMessageListener } from "./utilities/setWebviewMessageListener";
+import { checkSnippetFile } from "./utilities/checkSnippetFile";
 
 export class SidebarProvider implements WebviewViewProvider {
   _view?: WebviewView;
   _doc?: TextDocument;
+  extensionUri: Uri | undefined;
 
-  constructor(private readonly _extensionUri: Uri) {}
+  constructor(private readonly _extensionUri: Uri) {
+    this.extensionUri = _extensionUri;
+  }
 
   public resolveWebviewView(webviewView: WebviewView) {
     this._view = webviewView;
 
     webviewView.webview.options = {
-      // Allow scripts in the webview
       enableScripts: true,
       localResourceRoots: [this._extensionUri],
     };
@@ -37,10 +40,20 @@ export class SidebarProvider implements WebviewViewProvider {
       scriptUri,
       webviewView.webview,
     );
-    setWebviewMessageListener(webviewView.webview, this._extensionUri);
+    setWebviewMessageListener(this._view.webview, this._extensionUri);
+    this._view.onDidChangeVisibility((e) => {
+      this.reload();
+    });
+    this.reload();
   }
 
   public revive(panel: WebviewView) {
     this._view = panel;
+    this.reload();
+  }
+  public reload() {
+    if (this.extensionUri && this._view) {
+      checkSnippetFile(this.extensionUri, this._view.webview);
+    }
   }
 }

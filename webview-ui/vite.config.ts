@@ -16,7 +16,6 @@ export default defineConfig({
         entryFileNames: `assets/[name].js`,
         chunkFileNames: `assets/[name].js`,
         assetFileNames: (assetInfo) => {
-          console.log(assetInfo.name);
           if (assetInfo.name?.endsWith(".css")) return "assets/style.css";
           return `assets/[name].js`;
         },

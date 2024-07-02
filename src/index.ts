@@ -4,8 +4,6 @@ import { newSnippet } from "./utilities/setWebviewMessageListener";
 import { checkSnippetFile } from "./utilities/checkSnippetFile";
 
 export function activate(context: ExtensionContext) {
-  checkSnippetFile(context.extensionUri);
-
   const sidebarProvider = new SidebarProvider(context.extensionUri);
   const sidebar = window.registerWebviewViewProvider(
     "snippet-manager-sidebar",
@@ -15,6 +13,9 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(
     commands.registerCommand("snippet-manager.newSnippet", () => {
       newSnippet(context.extensionUri);
+    }),
+    commands.registerCommand("snippet-manager.reloadSnippets", () => {
+      sidebarProvider.reload();
     }),
   );
   context.subscriptions.push(sidebar);

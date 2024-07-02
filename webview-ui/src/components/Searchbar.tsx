@@ -29,7 +29,7 @@ const Searchbar = ({
       <MdAdd
         className="text-[color:var(--vscode-editorHint-foreground)] text-2xl hover:bg-[color:var(--vscode-input-background)] ml-2 h-full py-1 aspect-square rounded hover:cursor-pointer duration-100"
         onClick={newSnippept}
-      />{" "}
+      />
       <IoIosRefresh
         className="text-[color:var(--vscode-editorHint-foreground)] hover:cursor-pointer text-lg mx-2"
         onClick={reload}

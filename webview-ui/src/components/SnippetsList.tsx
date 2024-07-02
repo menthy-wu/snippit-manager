@@ -1,17 +1,18 @@
 import Snippet from "./SnippetButton";
 import "../index.css";
-import snippets from "../../../data/snippet.json";
 import { SnippetProps } from "../utilities/types";
 
 const SnippetsList = ({
   searchVal,
   category,
+  snippets,
 }: {
   searchVal: string;
   category: string;
+  snippets: SnippetProps[] | [];
 }) => {
-  const filteredSnippets = Object.keys(snippets.snippets).length
-    ? (Object.values(snippets.snippets) as SnippetProps[]).filter(
+  const filteredSnippets = Object.keys(snippets).length
+    ? (Object.values(snippets) as SnippetProps[]).filter(
         (snippet: SnippetProps) =>
           snippet.title.toLocaleLowerCase().includes(searchVal) &&
           snippet.category?.includes(category),

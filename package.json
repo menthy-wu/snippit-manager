@@ -37,6 +37,10 @@
       {
         "command": "snippet-manager.newSnippet",
         "title": "Add New Snippet"
+      },
+      {
+        "command": "snippet-manager.reloadSnippets",
+        "title": "Reload Snippets"
       }
     ]
   },

@@ -9,6 +9,7 @@ import {
 } from "vscode";
 import { EditorPanel } from "../EditorPanel";
 import * as fs from "fs";
+import { SnippetProps } from "../../webview-ui/src/utilities/types";
 
 export const setWebviewMessageListener = (
   webview: Webview,
@@ -25,7 +26,7 @@ export const setWebviewMessageListener = (
         commands.executeCommand("snippet-manager.newSnippet");
         break;
       case "save-snippet":
-        saveSnippet(extensionUri, body);
+        saveSnippet(extensionUri, Object.values(body)[0]);
 
         break;
       case "delete-snippet":
@@ -39,7 +40,7 @@ export const setWebviewMessageListener = (
         window.showErrorMessage(`Invalid snippet: ${body}`);
         break;
       case "reload":
-        commands.executeCommand("workbench.action.webview.reloadWebviewAction");
+        commands.executeCommand("snippet-manager.reloadSnippets");
         break;
     }
   });
@@ -63,10 +64,12 @@ export const useSnippet = (snippet: string) => {
 
 export const editSnippet = (extensionUri: Uri, snippet: string) => {
   EditorPanel.render(extensionUri);
-  EditorPanel.postMessage(snippet);
+  EditorPanel.postMessage({
+    command: "edit-snippet",
+    body: JSON.parse(snippet),
+  });
 };
 export const newSnippet = (extensionUri: Uri) => {
-  const editor = window.activeTextEditor;
   let snippet = {
     title: "New Snippet",
     description: "",
@@ -74,12 +77,12 @@ export const newSnippet = (extensionUri: Uri) => {
     id: "",
     category: "",
   };
+  const editor = window.activeTextEditor;
   if (editor) {
     const selection = editor.selection;
     const text = editor.document.getText(selection);
     snippet.snippet = text;
   }
-
   editSnippet(extensionUri, JSON.stringify(snippet));
 };
 
@@ -105,11 +108,11 @@ export const deleteSnippet = async (uri: Uri, snippetID: string) => {
   } else {
     window.showErrorMessage("Cannot find file!");
   }
-  commands.executeCommand("workbench.action.webview.reloadWebviewAction");
+  commands.executeCommand("snippet-manager.reloadSnippets");
 };
 
-export const saveSnippet = async (uri: Uri, snippet: string) => {
-  const newSnippet = JSON.parse(snippet);
+export const saveSnippet = async (uri: Uri, snippet: SnippetProps) => {
+  const newSnippet = snippet;
   const workspaceEdit = new WorkspaceEdit();
   const snippetUri = Uri.joinPath(uri, "data", "snippet.json");
   let snippetsData = JSON.parse("{}");
@@ -125,20 +128,15 @@ export const saveSnippet = async (uri: Uri, snippet: string) => {
       );
     }
 
-    Object.keys(newSnippet).forEach((key) => {
-      snippetsData.snippets[key] = newSnippet[key]; // Update or add entry
-      console.log("ohhi", newSnippet[key].category);
-      if (!snippetsData.categories.includes(newSnippet[key].category)) {
-        snippetsData.categories.push(newSnippet[key].category);
-      }
-    });
+    snippetsData.snippets[newSnippet.id] = newSnippet; // Update or add entry
+    if (!snippetsData.categories.includes(newSnippet.category)) {
+      snippetsData.categories.push(newSnippet.category);
+    }
   } else {
-    snippetsData = newSnippet;
-    workspaceEdit.createFile(snippetUri, { ignoreIfExists: true });
-    await workspace.applyEdit(workspaceEdit);
+    window.showErrorMessage("Cannot find file please reload window!");
   }
-
   const encodedContent = new TextEncoder().encode(JSON.stringify(snippetsData));
   await workspace.fs.writeFile(snippetUri, encodedContent);
+  commands.executeCommand("snippet-manager.reloadSnippets");
   commands.executeCommand("snippet-manager.newSnippet");
 };
