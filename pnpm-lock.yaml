@@ -6,6 +6,10 @@ settings:
 
 importers:
   .:
+    dependencies:
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
     devDependencies:
       "@antfu/eslint-config":
         specifier: ^2.21.1

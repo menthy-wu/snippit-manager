@@ -4,6 +4,7 @@ import { getUri } from "./utilities/getUri";
 import { Uri, WebviewView, WebviewViewProvider, TextDocument } from "vscode";
 import { setWebviewMessageListener } from "./utilities/setWebviewMessageListener";
 import { checkSnippetFile } from "./utilities/checkSnippetFile";
+import { getUserSnippets } from "./utilities/github";
 
 export class SidebarProvider implements WebviewViewProvider {
   _view?: WebviewView;
@@ -53,7 +54,8 @@ export class SidebarProvider implements WebviewViewProvider {
   }
   public reload() {
     if (this.extensionUri && this._view) {
-      checkSnippetFile(this.extensionUri, this._view.webview);
+      getUserSnippets(this.extensionUri, this._view.webview);
+      // checkSnippetFile(this.extensionUri, this._view.webview);
     }
   }
 }

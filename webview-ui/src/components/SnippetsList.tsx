@@ -29,6 +29,8 @@ const SnippetsList = ({
             snippet={snippet.snippet}
             id={snippet.id}
             category={snippet.category}
+            fileName={snippet.fileName}
+            url={snippet.url}
           />
         ))
       ) : (

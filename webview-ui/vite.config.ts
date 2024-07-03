@@ -11,6 +11,7 @@ export default defineConfig({
       input: {
         sidebar: "./src/pages/sidebar.html",
         editor: "./src/pages/editor.html",
+        login: "./src/pages/login.html",
       },
       output: {
         entryFileNames: `assets/[name].js`,

@@ -10,6 +10,7 @@ import {
 import { EditorPanel } from "../EditorPanel";
 import * as fs from "fs";
 import { SnippetProps } from "../../webview-ui/src/utilities/types";
+import { deleteSnippet, getSnippetContent, saveSnippet } from "./github";
 
 export const setWebviewMessageListener = (
   webview: Webview,
@@ -19,15 +20,14 @@ export const setWebviewMessageListener = (
     const command = message.command;
     const body = message.body;
     switch (command) {
-      case "use-snippet":
-        useSnippet(body);
+      case "call-snippet":
+        callSnippet(body);
         break;
       case "new-snippet":
         commands.executeCommand("snippet-manager.newSnippet");
         break;
       case "save-snippet":
-        saveSnippet(extensionUri, Object.values(body)[0]);
-
+        saveSnippet(extensionUri, Object.values(body)[0] as SnippetProps);
         break;
       case "delete-snippet":
         deleteSnippet(extensionUri, body);
@@ -45,8 +45,8 @@ export const setWebviewMessageListener = (
     }
   });
 };
-
-export const useSnippet = (snippet: string) => {
+export const callSnippet = async (snippetURL: string) => {
+  const snippet = await getSnippetContent(snippetURL);
   const editor = window.activeTextEditor;
   if (!editor) {
     window.showErrorMessage("Editor does not exist!");
@@ -61,21 +61,24 @@ export const useSnippet = (snippet: string) => {
     });
   });
 };
-
-export const editSnippet = (extensionUri: Uri, snippet: string) => {
+export const editSnippet = async (extensionUri: Uri, snippetString: string) => {
+  let snippet = JSON.parse(snippetString);
+  if (snippet.url) snippet.snippet = await getSnippetContent(snippet.url);
   EditorPanel.render(extensionUri);
   EditorPanel.postMessage({
     command: "edit-snippet",
-    body: JSON.parse(snippet),
+    body: snippet,
   });
 };
 export const newSnippet = (extensionUri: Uri) => {
   let snippet = {
     title: "New Snippet",
     description: "",
-    snippet: "",
     id: "",
     category: "",
+    snippet: "",
+    fileName: "",
+    url: "",
   };
   const editor = window.activeTextEditor;
   if (editor) {
@@ -84,59 +87,4 @@ export const newSnippet = (extensionUri: Uri) => {
     snippet.snippet = text;
   }
   editSnippet(extensionUri, JSON.stringify(snippet));
-};
-
-export const deleteSnippet = async (uri: Uri, snippetID: string) => {
-  const snippetUri = Uri.joinPath(uri, "data", "snippet.json");
-  let snippetsData = JSON.parse("{}");
-  if (fs.existsSync(snippetUri.fsPath)) {
-    const data = await workspace.fs.readFile(snippetUri);
-    const content = new TextDecoder().decode(data);
-    try {
-      snippetsData = JSON.parse(content);
-    } catch (error) {
-      window.showErrorMessage(
-        "Error parsing JSON, please delete your snippets!",
-      );
-    }
-
-    delete snippetsData.snippets[snippetID];
-    const encodedContent = new TextEncoder().encode(
-      JSON.stringify(snippetsData),
-    );
-    await workspace.fs.writeFile(snippetUri, encodedContent);
-  } else {
-    window.showErrorMessage("Cannot find file!");
-  }
-  commands.executeCommand("snippet-manager.reloadSnippets");
-};
-
-export const saveSnippet = async (uri: Uri, snippet: SnippetProps) => {
-  const newSnippet = snippet;
-  const workspaceEdit = new WorkspaceEdit();
-  const snippetUri = Uri.joinPath(uri, "data", "snippet.json");
-  let snippetsData = JSON.parse("{}");
-
-  if (fs.existsSync(snippetUri.fsPath)) {
-    const data = await workspace.fs.readFile(snippetUri);
-    const content = new TextDecoder().decode(data);
-    try {
-      snippetsData = JSON.parse(content);
-    } catch (error) {
-      window.showErrorMessage(
-        "Error parsing JSON, please delete your snippets!",
-      );
-    }
-
-    snippetsData.snippets[newSnippet.id] = newSnippet; // Update or add entry
-    if (!snippetsData.categories.includes(newSnippet.category)) {
-      snippetsData.categories.push(newSnippet.category);
-    }
-  } else {
-    window.showErrorMessage("Cannot find file please reload window!");
-  }
-  const encodedContent = new TextEncoder().encode(JSON.stringify(snippetsData));
-  await workspace.fs.writeFile(snippetUri, encodedContent);
-  commands.executeCommand("snippet-manager.reloadSnippets");
-  commands.executeCommand("snippet-manager.newSnippet");
 };

@@ -1,7 +1,7 @@
 import { ExtensionContext, commands, window } from "vscode";
 import { SidebarProvider } from "./SidebarProvider";
 import { newSnippet } from "./utilities/setWebviewMessageListener";
-import { checkSnippetFile } from "./utilities/checkSnippetFile";
+import { login } from "./utilities/github";
 
 export function activate(context: ExtensionContext) {
   const sidebarProvider = new SidebarProvider(context.extensionUri);

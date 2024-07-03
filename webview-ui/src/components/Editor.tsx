@@ -12,6 +12,8 @@ const Editor = () => {
     snippet: "",
     id: "",
     category: "",
+    fileName: "",
+    url: "",
   });
   const handleListener = (event: MessageEvent) => {
     const data = event.data;
