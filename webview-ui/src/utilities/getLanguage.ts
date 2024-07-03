@@ -29,6 +29,7 @@ export const getLanguage = (path: string) => {
   if (path.endsWith(".groovy")) return "Groovy";
   if (path.endsWith(".vue")) return "Vue";
   if (path.endsWith(".svelte")) return "Svelte";
+  if (path.endsWith(".cs")) return "Smalltalk";
   return "plaintext";
 };
 export const changeExtenstion = (fileName: string, language: string) => {
@@ -68,4 +69,5 @@ export const extensionMap: { [key: string]: string } = {
   Groovy: ".groovy",
   Vue: ".vue",
   Svelte: ".svelte",
+  Smalltalk: ".cs",
 };

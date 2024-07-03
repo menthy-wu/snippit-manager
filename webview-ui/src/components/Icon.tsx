@@ -1,4 +1,4 @@
-import { RiJavascriptFill } from "react-icons/ri";
+import { RiJavascriptFill, RiSvelteFill } from "react-icons/ri";
 import {
   SiCplusplus,
   SiRuby,
@@ -9,12 +9,22 @@ import {
   SiTypescript,
   SiHtml5,
   SiCss3,
+  SiYaml,
+  SiJson,
+  SiPerl,
+  SiApachegroovy,
+  SiR,
+  SiLua,
+  SiScala,
+  SiDart,
+  SiCsharp,
 } from "react-icons/si";
 import { PiFileCSharpBold } from "react-icons/pi";
-import { IoCode, IoTerminal } from "react-icons/io5";
+import { IoDocumentTextOutline, IoTerminal } from "react-icons/io5";
 import { FaPython, FaJava } from "react-icons/fa";
 import { TbSql, TbAssembly } from "react-icons/tb";
-import { FaXmarksLines } from "react-icons/fa6";
+import { FaVuejs, FaXmarksLines } from "react-icons/fa6";
+import { BsMarkdown } from "react-icons/bs";
 
 const Icon = ({
   language,
@@ -57,13 +67,13 @@ const Icon = ({
       icon = <FaPython className={`${size} ${colorClass}`} />;
       break;
     case "Java":
-      colorClass = "text-red-600";
-      backgroundColor = "bg-red-600/30";
+      colorClass = "text-red";
+      backgroundColor = "bg-red/30";
       icon = <FaJava className={`${size} ${colorClass}`} />;
       break;
     case "Ruby":
-      colorClass = "text-red-500";
-      backgroundColor = "bg-red-500/30";
+      colorClass = "text-red";
+      backgroundColor = "bg-red/30";
       icon = <SiRuby className={`${size} ${colorClass}`} />;
       break;
     case "Swift":
@@ -117,24 +127,69 @@ const Icon = ({
       icon = <FaXmarksLines className={`${size} ${colorClass}`} />;
       break;
     case "Markdown":
-      colorClass = "text-gray-500";
+      colorClass = "text-white";
       backgroundColor = "bg-gray-500/30";
-      icon = <FaXmarksLines className={`${size} ${colorClass}`} />;
+      icon = <BsMarkdown className={`${size} ${colorClass}`} />;
       break;
     case "JSON":
       colorClass = "text-yellow-500";
       backgroundColor = "bg-yellow-500/30";
-      icon = <FaXmarksLines className={`${size} ${colorClass}`} />;
+      icon = <SiJson className={`${size} ${colorClass}`} />;
       break;
     case "YAML":
       colorClass = "text-blue-500";
       backgroundColor = "bg-blue-500/30";
-      icon = <FaXmarksLines className={`${size} ${colorClass}`} />;
+      icon = <SiYaml className={`${size} ${colorClass}`} />;
+      break;
+    case "Vue":
+      colorClass = "text-green-500";
+      backgroundColor = "bg-green-500/30";
+      icon = <FaVuejs className={`${size} ${colorClass}`} />;
+      break;
+    case "Perl":
+      colorClass = "text-blue-500";
+      backgroundColor = "bg-blue-500/30";
+      icon = <SiPerl className={`${size} ${colorClass}`} />;
+      break;
+    case "Groovy":
+      colorClass = "text-sky-500";
+      backgroundColor = "bg-sky-500/30";
+      icon = <SiApachegroovy className={`${size} ${colorClass}`} />;
+      break;
+    case "R":
+      colorClass = "text-blue-500";
+      backgroundColor = "bg-blue-500/30";
+      icon = <SiR className={`${size} ${colorClass}`} />;
+      break;
+    case "Svelte":
+      colorClass = "text-orange-500";
+      backgroundColor = "bg-orange-500/30";
+      icon = <RiSvelteFill className={`${size} ${colorClass}`} />;
+      break;
+    case "Lua":
+      colorClass = "text-blue-500";
+      backgroundColor = "bg-blue-500/30";
+      icon = <SiLua className={`${size} ${colorClass}`} />;
+      break;
+    case "Scala":
+      colorClass = "text-red";
+      backgroundColor = "bg-red/30";
+      icon = <SiScala className={`${size} ${colorClass}`} />;
+      break;
+    case "Dart":
+      colorClass = "text-sky-500";
+      backgroundColor = "bg-sky-500/30";
+      icon = <SiDart className={`${size} ${colorClass}`} />;
+      break;
+    case "Smalltalk":
+      colorClass = "text-blue-500";
+      backgroundColor = "bg-blue-500/30";
+      icon = <SiCsharp className={`${size} ${colorClass}`} />;
       break;
     default:
       colorClass = "text-gray-500";
       backgroundColor = "bg-gray-500/30";
-      icon = <IoCode className={`${size} ${colorClass}`} />;
+      icon = <IoDocumentTextOutline className={`${size} ${colorClass}`} />;
   }
   return circle ? (
     <div

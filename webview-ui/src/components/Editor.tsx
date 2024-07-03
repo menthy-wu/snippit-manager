@@ -48,7 +48,7 @@ const Editor = () => {
     };
   }, []);
   return (
-    <div className="flex flex-col h-screen gap-2 py-3">
+    <div className="flex flex-col h-screen gap-2 py-3 justify-between items-center">
       <Input
         fullWidth={true}
         isRequired
@@ -71,6 +71,7 @@ const Editor = () => {
 
       <Textarea
         isRequired
+        maxRows={3}
         label="Description"
         placeholder="Enter your description"
         fullWidth={true}
@@ -84,7 +85,7 @@ const Editor = () => {
         defaultItems={categories.map((category) => ({ value: category }))}
         label="Category"
         placeholder="Text"
-        className="max-w-xs"
+        className="w-full"
         allowsCustomValue={true}
         onSelect={(item) =>
           setSnippet({
@@ -99,22 +100,26 @@ const Editor = () => {
           <AutocompleteItem key={item.value}>{item.value}</AutocompleteItem>
         )}
       </Autocomplete>
-      <div>
+      <div className="flex items-center justify-start gap-2 w-full">
         Snippet
-        <Code color="primary">{snippet.category}</Code>
+        <Code color="primary">{snippet.category || "plaintext"}</Code>
       </div>
       <CodeEditor
         value={snippet.snippet}
         language={language}
         theme={theme === "dark" ? "vs-dark" : "light"}
         onChange={(e) => setSnippet({ ...snippet, snippet: e || "" })}
-        className="bg-editor-input-background rounded-lg overflow-hidden"
+        className="bg-editor-input-background !rounded-lg overflow-hidden h-full"
         options={{
+          automaticLayout: true,
           minimap: { enabled: false },
           scrollBeyondLastLine: false,
         }}
       />
       <Button
+        size="lg"
+        value="Save"
+        className="w-fit p-3"
         fullWidth={false}
         color="primary"
         variant="shadow"
