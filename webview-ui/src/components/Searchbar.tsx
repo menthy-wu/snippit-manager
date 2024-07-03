@@ -1,8 +1,9 @@
 import { IoIosSearch, IoIosRefresh } from "react-icons/io";
 import { newSnippept, reload } from "../utilities/actions";
 import "../index.css";
-import { LiaTimesSolid } from "react-icons/lia";
+// import { LiaTimesSolid } from "react-icons/lia";
 import { MdAdd } from "react-icons/md";
+import { Input, Button } from "@nextui-org/react";
 
 const Searchbar = ({
   searchVal,
@@ -12,28 +13,46 @@ const Searchbar = ({
   setSearchVal: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   return (
-    <div className="w-full flex items-center justify-between sticky top-0">
-      <div className="flex py-2 bg-sidebar-input-background">
-        <IoIosSearch className="text-[color:var(--vscode-editorHint-foreground)] text-lg mx-2" />
-        <input
-          className="w-full bg-transparent focus:outline-none group"
-          type="text"
-          value={searchVal}
-          onChange={(e) => setSearchVal(e.target.value)}
-        />
-        <LiaTimesSolid
-          className="text-[color:var(--vscode-editorHint-foreground)] hover:cursor-pointer text-lg mx-2"
-          onClick={() => setSearchVal("")}
-        />
-      </div>
-      <MdAdd
-        className="text-[color:var(--vscode-editorHint-foreground)] text-2xl hover:bg-[color:var(--vscode-input-background)] ml-2 h-full py-1 aspect-square rounded hover:cursor-pointer duration-100"
-        onClick={newSnippept}
+    <div className="w-full flex items-center justify-between gap-2">
+      <Input
+        fullWidth={true}
+        classNames={{
+          label: ["text-sideBar-foreground"],
+          innerWrapper: [
+            "bg-transparent",
+            "text-sideBar-foreground",
+            "dark:text-sideBar-foreground",
+          ],
+          input: ["!text-sideBar-foreground"],
+          inputWrapper: [
+            "dark:text-sideBar-foreground",
+            "text-sideBar-foreground",
+            "shadow-sm",
+            "bg-sidebar-input-background",
+            "dark:bg-sidebar-input-background",
+            "hover:bg-sidebar-input-background/80",
+            "dark:hover:bg-sidebar-input-background/80",
+            "group-data-[focus=true]:bg-sidebar-input-background",
+            "dark:group-data-[focus=true]:bg-sidebar-input-background",
+            "!cursor-text",
+          ],
+        }}
+        placeholder="search"
+        type="text"
+        value={searchVal}
+        onChange={(e) => setSearchVal(e.target.value)}
+        startContent={
+          <IoIosSearch className="text-editorHint-foreground text-lg mx-2" />
+        }
+        isClearable
+        onClear={() => setSearchVal("")}
       />
-      <IoIosRefresh
-        className="text-[color:var(--vscode-editorHint-foreground)] hover:cursor-pointer text-lg mx-2"
-        onClick={reload}
-      />
+      <Button onClick={newSnippept} isIconOnly variant="light" color="primary">
+        <MdAdd />
+      </Button>
+      <Button onClick={reload} isIconOnly variant="light" color="primary">
+        <IoIosRefresh className="text-editorHint-foreground" />
+      </Button>
     </div>
   );
 };

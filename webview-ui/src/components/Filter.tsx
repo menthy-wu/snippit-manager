@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
-import { LiaTimesSolid } from "react-icons/lia";
+// import { LiaTimesSolid } from "react-icons/lia";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+} from "@nextui-org/react";
+import Icon from "./Icon";
+import { MdCancel } from "react-icons/md";
 
 const Filter = ({
   category,
@@ -26,43 +35,65 @@ const Filter = ({
     };
   }, [ref]);
   return (
-    <div className=" w-full flex gap-2 items-center justify-center">
-      <div> category</div>
-      <div
-        ref={ref}
-        className="relative z-10 bg-sidebar-input-background flex flex-grow w-full items-center justify-center cursor-pointer"
+    <div className="w-full flex items-center justify-between gap-2">
+      <Dropdown
+        classNames={{
+          content: ["bg-sidebar-input-background w-full flex-grow"],
+        }}
       >
-        <input
-          className="px-4 focus:outline-none bg-transparent w-full"
-          type="text"
-          value={category}
-          onClick={() => setShow(true)}
-        />
-        {show && (
-          <div className="absolute bg-sidebar-input-background w-full top-5 z-0">
-            {options.map((option, index) => (
-              <div
-                className="px-2 py-1 hover:bg-primary/10 hover:cursor-pointer drop-shadow-lg"
-                key={index}
-                onClick={() => {
-                  setcategory(option);
-                  setShow(false);
-                }}
-              >
-                {option}
-              </div>
-            ))}
-          </div>
-        )}
-        <FaAngleDown
-          className={`${show && "rotate-180"} duration-100`}
-          onClick={() => setShow(!show)}
-        />
-      </div>
-      <LiaTimesSolid
-        className="text-[color:var(--vscode-editorHint-foreground)] hover:cursor-pointer text-lg mx-2"
+        <DropdownTrigger>
+          <Button
+            fullWidth={true}
+            color="primary"
+            variant="bordered"
+            endContent={
+              <FaAngleDown
+                className={`${show && "rotate-180"} duration-100`}
+                onClick={() => setShow(!show)}
+              />
+            }
+          >
+            {category || "filter language"}
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu
+          itemClasses={{
+            base: [
+              "rounded-md",
+              "transition-opacity",
+              "data-[hover=true]:text-foreground",
+              "data-[hover=true]:ring-primary",
+              "data-[hover=true]:bg-sidebar-input-background",
+              "dark:data-[hover=true]:bg-sidebar-input-background",
+              "data-[selectable=true]:focus:bg-sidebar-input-background",
+              "data-[focus-visible=true]:ring-primary",
+            ],
+          }}
+          className="border-default-500 rounded-lg w-full bg-gradient-to-br from-editor-input-background to-black/5 drop-shadow-xl"
+          variant="faded"
+        >
+          {options.map((option, index) => (
+            <DropdownItem
+              startContent={<Icon language={option} />}
+              key={index}
+              onClick={() => {
+                setcategory(option);
+                setShow(false);
+              }}
+            >
+              {option}
+            </DropdownItem>
+          ))}
+        </DropdownMenu>
+      </Dropdown>
+      <Button
         onClick={() => setcategory("")}
-      />
+        isIconOnly
+        variant="light"
+        color="primary"
+      >
+        <MdCancel className="text-editorHint-foreground" />
+      </Button>{" "}
     </div>
   );
 };

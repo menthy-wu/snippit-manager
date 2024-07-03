@@ -1,6 +1,12 @@
+import { nextui } from "@nextui-org/theme";
 /** @type {import('tailwindcss').Config} */
+
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -8,8 +14,32 @@ export default {
         red: "#FF1E58",
         "editor-input-background": "var(--vscode-tab-inactiveBackground)",
         "sidebar-input-background": "var(--vscode-input-background)",
+        "sideBar-foreground": "var(--vscode-sideBar-foreground)",
+        "sideBar-background": "var(--vscode-sideBar-background)",
+        "input-background": "var(--vscode-input-background)",
+        "editorHint-foreground": "var(--vscode-editorHint-foreground)",
       },
     },
   },
-  plugins: [],
+  darkMode: "class",
+  plugins: [
+    nextui({
+      themes: {
+        light: {
+          colors: {
+            background: "var(--vscode-sideBar-background)",
+            foreground: "var(--vscode-sideBar-foreground)",
+            primary: "#af73d8",
+          },
+        },
+        dark: {
+          colors: {
+            background: "var(--vscode-sideBar-background)",
+            foreground: "var(--vscode-sideBar-foreground)",
+          },
+          primary: "#af73d8",
+        },
+      },
+    }),
+  ],
 };

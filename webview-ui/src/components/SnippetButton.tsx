@@ -2,20 +2,22 @@ import { LuPencil, LuTrash } from "react-icons/lu";
 import { editSnippet, callSnippet, deleteSnippet } from "../utilities/actions";
 import { SnippetProps } from "../utilities/types";
 import "../index.css";
+import Icon from "./Icon";
 
 const Snippet = (snippet: SnippetProps) => {
   return (
-    <div className="group w-full flex items-center bg-[color:var(--vscode-input-background)] border-[color:var(--vscode-input-background)] border-[1px] hover:bg-primary/25 hover:border-primary hover:cursor-pointer rounded-lg duration-200 p-2">
+    <div className="gap-3 group w-full flex items-center bg-input-background border-input-background border-[1px] hover:bg-primary/25 hover:border-primary hover:cursor-pointer rounded-lg duration-200 p-2">
+      <div className="w-1/6">
+        <Icon size="text-xl" language={snippet.category} circle={true} />
+      </div>
       <div
         className="w-full flex flex-col"
-        onClick={() => callSnippet(snippet.snippet)}
+        onClick={() => callSnippet(snippet.url)}
       >
-        <div className="flex items-center gap-2 w-full">
-          <div className="text-sm text-[color:var(--vscode-sideBar-foreground)]">
-            {snippet.title}
-          </div>
-          <div className="text-xs rounded text-primary">{snippet.category}</div>
+        <div className="text-sm text-sideBar-foreground font-semibold">
+          {snippet.title}
         </div>
+
         <div className="text-xs text-[color:var(--vscode-editorHint-foreground)]">
           {snippet.description}
         </div>

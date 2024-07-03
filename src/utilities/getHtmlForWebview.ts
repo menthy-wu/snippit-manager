@@ -9,7 +9,7 @@ export const getHtmlForWebview = (
   const nonce = getNonce();
 
   return ` <!DOCTYPE html>
-      <html lang="en">
+      <html lang="en" className = "w-full h-full">
         <head>
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,7 +17,7 @@ export const getHtmlForWebview = (
           <link rel="stylesheet" type="text/css" href="${stylesUri}">
           <title>Snippets Manager</title>
         </head>
-        <body>
+        <body className = "w-full h-full">
           <div id="root"></div>
           <script type="module" nonce="${nonce}" src="${scriptUri}"></script>
         </body>
