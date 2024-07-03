@@ -193,7 +193,7 @@ const Icon = ({
   }
   return circle ? (
     <div
-      className={`flex w-full aspect-square rounded-full items-center justify-center p-2 ${backgroundColor}`}
+      className={`flex aspect-square rounded-full items-center justify-center p-3 ${backgroundColor}`}
     >
       {icon}
     </div>

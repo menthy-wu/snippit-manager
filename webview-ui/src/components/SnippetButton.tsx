@@ -24,9 +24,7 @@ const Snippet = (snippet: SnippetProps) => {
         </div>
       }
       startContent={
-        <div className="w-1/6 aspect-square py-3">
-          <Icon size="text-xl" language={snippet.category} circle={true} />
-        </div>
+        <Icon size="text-xl" language={snippet.category} circle={true} />
       }
     >
       <div
