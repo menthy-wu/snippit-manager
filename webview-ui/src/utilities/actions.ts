@@ -7,6 +7,11 @@ export const reload = () => {
   });
 };
 
+export const loadPublicGists = () => {
+  vscode.postMessage({
+    command: "load-public-gists",
+  });
+};
 export const editSnippet = (snippet: SnippetProps) => {
   vscode.postMessage({
     command: "edit-snippet",

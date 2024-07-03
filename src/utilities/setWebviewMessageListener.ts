@@ -42,6 +42,9 @@ export const setWebviewMessageListener = (
       case "reload":
         commands.executeCommand("snippet-manager.reloadSnippets");
         break;
+      case "load-public-gists":
+        commands.executeCommand("snippet-manager.loadPublicSnippets");
+        break;
     }
   });
 };

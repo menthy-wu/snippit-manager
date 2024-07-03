@@ -3,7 +3,7 @@ import { getNonce } from "./utilities/getNonce";
 import { getUri } from "./utilities/getUri";
 import { Uri, WebviewView, WebviewViewProvider, TextDocument } from "vscode";
 import { setWebviewMessageListener } from "./utilities/setWebviewMessageListener";
-import { getUserSnippets } from "./utilities/github";
+import { getPublicSnippets, getUserSnippets } from "./utilities/github";
 
 export class SidebarProvider implements WebviewViewProvider {
   _view?: WebviewView;
@@ -13,6 +13,10 @@ export class SidebarProvider implements WebviewViewProvider {
 
   constructor(private readonly _extensionUri: Uri) {
     this.extensionUri = _extensionUri;
+  }
+
+  public static postMessage(message: any) {
+    if (this.currentView) this.currentView.webview.postMessage(message);
   }
 
   public resolveWebviewView(webviewView: WebviewView) {
@@ -54,7 +58,12 @@ export class SidebarProvider implements WebviewViewProvider {
   }
   public reload() {
     if (this.extensionUri && this._view) {
-      getUserSnippets(this.extensionUri, this._view.webview);
+      getUserSnippets(this.extensionUri);
+    }
+  }
+  public loadPublicGists() {
+    if (this.extensionUri && this._view) {
+      getPublicSnippets(this.extensionUri);
     }
   }
 }

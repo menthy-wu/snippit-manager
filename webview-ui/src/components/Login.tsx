@@ -10,7 +10,6 @@ const Login = () => {
       setUserCode(data.body.user_code);
     }
     if (data.command === "set-theme") {
-      console.log("set-theme");
       setTheme(data.body === 2 ? "dark" : "light");
     }
   };

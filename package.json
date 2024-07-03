@@ -41,6 +41,10 @@
       {
         "command": "snippet-manager.reloadSnippets",
         "title": "Reload Snippets"
+      },
+      {
+        "command": "snippet-manager.loadPublicSnippets",
+        "title": "Load Public Gists"
       }
     ]
   },

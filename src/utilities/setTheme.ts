@@ -4,11 +4,11 @@ import { LoginPanel } from "../LoginPanel";
 import { SidebarProvider } from "../SidebarProvider";
 
 export const setTheme = () => {
-  SidebarProvider.currentView?.webview?.postMessage({
+  SidebarProvider.postMessage({
     command: "set-theme",
     body: window.activeColorTheme.kind,
   });
-  LoginPanel.currentPanel?._panel.webview.postMessage({
+  LoginPanel.postMessage({
     command: "set-theme",
     body: window.activeColorTheme.kind,
   });

@@ -19,6 +19,9 @@ export function activate(context: ExtensionContext) {
     commands.registerCommand("snippet-manager.reloadSnippets", () => {
       sidebarProvider.reload();
     }),
+    commands.registerCommand("snippet-manager.loadPublicSnippets", () => {
+      sidebarProvider.loadPublicGists();
+    }),
   );
   context.subscriptions.push(sidebar);
 }
