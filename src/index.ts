@@ -1,7 +1,7 @@
 import { ExtensionContext, commands, window } from "vscode";
 import { SidebarProvider } from "./SidebarProvider";
 import { newSnippet } from "./utilities/setWebviewMessageListener";
-import { login } from "./utilities/github";
+import { setTheme } from "./utilities/setTheme";
 
 export function activate(context: ExtensionContext) {
   const sidebarProvider = new SidebarProvider(context.extensionUri);
@@ -9,6 +9,8 @@ export function activate(context: ExtensionContext) {
     "snippet-manager-sidebar",
     sidebarProvider,
   );
+  setTheme();
+  window.onDidChangeActiveColorTheme(setTheme);
 
   context.subscriptions.push(
     commands.registerCommand("snippet-manager.newSnippet", () => {

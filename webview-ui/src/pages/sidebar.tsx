@@ -3,13 +3,14 @@ import ReactDOM from "react-dom/client";
 import "../index.css";
 import Sidebar from "../components/Sidebar.js";
 import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <NextUIProvider>
-      <main className="dark h-full w-full">
+      <NextThemesProvider attribute="class" defaultTheme="dark">
         <Sidebar />
-      </main>
+      </NextThemesProvider>
     </NextUIProvider>
   </React.StrictMode>,
 );

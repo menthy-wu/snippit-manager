@@ -2,7 +2,6 @@ import { Disposable, WebviewPanel, window, Uri, ViewColumn } from "vscode";
 import { getUri } from "./utilities/getUri";
 import { getHtmlForWebview } from "./utilities/getHtmlForWebview";
 import { setWebviewMessageListener } from "./utilities/setWebviewMessageListener";
-import { checkSnippetFile } from "./utilities/checkSnippetFile";
 
 export class EditorPanel {
   public static currentPanel: EditorPanel | undefined;
@@ -53,7 +52,6 @@ export class EditorPanel {
 
       EditorPanel.currentPanel = new EditorPanel(panel, extensionUri);
     }
-    checkSnippetFile(extensionUri, EditorPanel.currentPanel._panel.webview);
   }
 
   public dispose() {

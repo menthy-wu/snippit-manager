@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 
 const Login = () => {
   const [userCode, setUserCode] = useState<string>("");
+  const { setTheme } = useTheme();
   const handleListener = (event: MessageEvent) => {
     const data = event.data;
     if (data.command === "login") {
       setUserCode(data.body.user_code);
+    }
+    if (data.command === "set-theme") {
+      console.log("set-theme");
+      setTheme(data.body === 2 ? "dark" : "light");
     }
   };
   useEffect(() => {

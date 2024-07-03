@@ -11,14 +11,13 @@ import {
 import { getUri } from "./utilities/getUri";
 import { getHtmlForWebview } from "./utilities/getHtmlForWebview";
 import { setWebviewMessageListener } from "./utilities/setWebviewMessageListener";
-import { checkSnippetFile } from "./utilities/checkSnippetFile";
 import { getAccessToken } from "./utilities/github";
 
 export class LoginPanel {
   private extensionUri: Uri;
   public static device_code: string;
   public static currentPanel: LoginPanel | undefined;
-  private readonly _panel: WebviewPanel;
+  public _panel: WebviewPanel;
   private _disposables: Disposable[] = [];
   public static postMessage(message: any) {
     if (this.currentPanel)
@@ -66,7 +65,6 @@ export class LoginPanel {
 
       LoginPanel.currentPanel = new LoginPanel(panel, extensionUri);
     }
-    checkSnippetFile(extensionUri, LoginPanel.currentPanel._panel.webview);
   }
 
   public dispose() {

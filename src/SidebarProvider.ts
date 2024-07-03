@@ -3,13 +3,13 @@ import { getNonce } from "./utilities/getNonce";
 import { getUri } from "./utilities/getUri";
 import { Uri, WebviewView, WebviewViewProvider, TextDocument } from "vscode";
 import { setWebviewMessageListener } from "./utilities/setWebviewMessageListener";
-import { checkSnippetFile } from "./utilities/checkSnippetFile";
 import { getUserSnippets } from "./utilities/github";
 
 export class SidebarProvider implements WebviewViewProvider {
   _view?: WebviewView;
   _doc?: TextDocument;
   extensionUri: Uri | undefined;
+  public static currentView: WebviewView | undefined;
 
   constructor(private readonly _extensionUri: Uri) {
     this.extensionUri = _extensionUri;
@@ -17,7 +17,7 @@ export class SidebarProvider implements WebviewViewProvider {
 
   public resolveWebviewView(webviewView: WebviewView) {
     this._view = webviewView;
-
+    SidebarProvider.currentView = this._view;
     webviewView.webview.options = {
       enableScripts: true,
       localResourceRoots: [this._extensionUri],
@@ -55,7 +55,6 @@ export class SidebarProvider implements WebviewViewProvider {
   public reload() {
     if (this.extensionUri && this._view) {
       getUserSnippets(this.extensionUri, this._view.webview);
-      // checkSnippetFile(this.extensionUri, this._view.webview);
     }
   }
 }

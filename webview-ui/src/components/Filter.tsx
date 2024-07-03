@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
-// import { LiaTimesSolid } from "react-icons/lia";
 import {
   Dropdown,
   DropdownTrigger,
@@ -93,7 +92,7 @@ const Filter = ({
         color="primary"
       >
         <MdCancel className="text-editorHint-foreground" />
-      </Button>{" "}
+      </Button>
     </div>
   );
 };

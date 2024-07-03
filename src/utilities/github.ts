@@ -11,6 +11,7 @@ import {
   workspace,
 } from "vscode";
 import { SnippetProps } from "../../webview-ui/src/utilities/types";
+import { EditorPanel } from "../EditorPanel";
 
 export const login = async (extensionUri: Uri) => {
   dotenv.config({ path: Uri.joinPath(extensionUri, ".env").fsPath });
@@ -93,6 +94,10 @@ export const getUserSnippets = async (uri: Uri, sidebar: Webview) => {
   });
   const categories = [...new Set(snippets.map((snippet) => snippet.category))];
   sidebar.postMessage({
+    command: "reload-snippets",
+    body: { categories, snippets },
+  });
+  EditorPanel.postMessage({
     command: "reload-snippets",
     body: { categories, snippets },
   });

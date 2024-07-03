@@ -24,22 +24,7 @@ export default {
   darkMode: "class",
   plugins: [
     nextui({
-      themes: {
-        light: {
-          colors: {
-            background: "var(--vscode-sideBar-background)",
-            foreground: "var(--vscode-sideBar-foreground)",
-            primary: "#af73d8",
-          },
-        },
-        dark: {
-          colors: {
-            background: "var(--vscode-sideBar-background)",
-            foreground: "var(--vscode-sideBar-foreground)",
-          },
-          primary: "#af73d8",
-        },
-      },
+      themes: {},
     }),
   ],
 };

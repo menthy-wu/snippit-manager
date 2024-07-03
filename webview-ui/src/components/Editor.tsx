@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import "../index.css";
 import { saveSnippet } from "../utilities/actions";
-// import Categories from "./Categories";
 import { SnippetProps } from "../utilities/types";
 import { Input, Button, Textarea } from "@nextui-org/react";
+import CodeEditor from "@monaco-editor/react";
+import { useTheme } from "next-themes";
+import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { Code } from "@nextui-org/code";
+import {
+  changeExtenstion,
+  extensionMap,
+  getLanguage,
+} from "../utilities/getLanguage";
 
 const Editor = () => {
-  // const [categories, setCategories] = useState<string[]>([]);
+  const categories = Object.keys(extensionMap);
   const [snippet, setSnippet] = useState<SnippetProps>({
     title: "",
     description: "",
@@ -16,10 +24,16 @@ const Editor = () => {
     fileName: "",
     url: "",
   });
+  const [language, setLanguage] = useState<string>("");
+  const { theme, setTheme } = useTheme();
   const handleListener = (event: MessageEvent) => {
     const data = event.data;
     if (data.command === "edit-snippet") {
       setSnippet(data.body);
+    }
+    if (data.command === "set-theme") {
+      console.log("set-theme");
+      setTheme(data.body === 2 ? "dark" : "light");
     }
   };
   useEffect(() => {
@@ -33,95 +47,77 @@ const Editor = () => {
       });
     };
   }, []);
-  const inputWrapper = [
-    "dark:text-sideBar-foreground",
-    "text-sideBar-foreground",
-    "shadow-sm",
-    "bg-editor-input-background",
-    "dark:bg-editor-input-background",
-    "backdrop-saturate-200",
-    "!cursor-text",
-  ];
   return (
-    <div className="flex flex-col h-screen gap-2">
+    <div className="flex flex-col h-screen gap-2 py-3">
       <Input
         fullWidth={true}
         isRequired
-        classNames={{
-          label: ["text-sideBar-foreground"],
-          base: [
-            "bg-transparent",
-            "text-sideBar-foreground",
-            "dark:text-sideBar-foreground",
-          ],
-          input: ["!text-sideBar-foreground"],
-          inputWrapper: inputWrapper,
-        }}
         type="text"
         value={snippet.title}
-        onChange={(e: React.FormEvent<HTMLInputElement>) =>
-          setSnippet({ ...snippet, title: e.currentTarget.value })
-        }
+        onChange={(e: React.FormEvent<HTMLInputElement>) => {
+          const language = getLanguage(e.currentTarget.value);
+          setLanguage(language.toLowerCase());
+          setSnippet({
+            ...snippet,
+            category: language,
+            title: e.currentTarget.value,
+          });
+        }}
         label="Title"
         isClearable
         onClear={() => setSnippet({ ...snippet, title: "" })}
+        description="Language will change based on your title's file extention."
       />
-      {/* <label>Title</label>
-      <input
-        className="w-full flex py-2 bg-editor-input-background px-4"
-        type="text"
-        value={snippet.title}
-        onChange={(e) => setSnippet({ ...snippet, title: e.target.value })}
-      /> */}
+
       <Textarea
         isRequired
         label="Description"
         placeholder="Enter your description"
         fullWidth={true}
-        classNames={{
-          label: ["text-sideBar-foreground"],
-          base: [
-            "bg-transparent",
-            "text-sideBar-foreground",
-            "dark:text-sideBar-foreground",
-          ],
-          input: ["!text-sideBar-foreground"],
-          inputWrapper: inputWrapper,
-        }}
         value={snippet.description}
         onChange={(e) =>
           setSnippet({ ...snippet, description: e.target.value })
         }
       />
-      <Textarea
+      <Autocomplete
         fullWidth={true}
-        isRequired
-        label="Snippet"
-        placeholder="Enter your code snippet"
-        className="w-full !h-full !flex-grow"
-        value={snippet.snippet}
-        onChange={(e) => setSnippet({ ...snippet, snippet: e.target.value })}
-      />
-      {/* <label>Description</label>
-      <textarea
-        className="w-full flex py-2 bg-editor-input-background px-4"
-        value={snippet.description}
-        onChange={(e) =>
-          setSnippet({ ...snippet, description: e.target.value })
+        defaultItems={categories.map((category) => ({ value: category }))}
+        label="Category"
+        placeholder="Text"
+        className="max-w-xs"
+        allowsCustomValue={true}
+        onSelect={(item) =>
+          setSnippet({
+            ...snippet,
+            category: item.currentTarget.value,
+            title: changeExtenstion(snippet.title, item.currentTarget.value),
+          })
         }
-      />
-      <label>Snippet</label>
-     
-      <textarea
-        className="w-full flex py-2 bg-editor-input-background px-4 flex-grow"
+        onInputChange={(item) => setSnippet({ ...snippet, category: item })}
+      >
+        {(item) => (
+          <AutocompleteItem key={item.value}>{item.value}</AutocompleteItem>
+        )}
+      </Autocomplete>
+      <div>
+        Snippet
+        <Code color="primary">{snippet.category}</Code>
+      </div>
+      <CodeEditor
         value={snippet.snippet}
-        onChange={(e) => setSnippet({ ...snippet, snippet: e.target.value })}
-      /> */}
+        language={language}
+        theme={theme === "dark" ? "vs-dark" : "light"}
+        onChange={(e) => setSnippet({ ...snippet, snippet: e || "" })}
+        className="bg-editor-input-background rounded-lg overflow-hidden"
+        options={{
+          minimap: { enabled: false },
+          scrollBeyondLastLine: false,
+        }}
+      />
       <Button
         fullWidth={false}
         color="primary"
         variant="shadow"
-        // className="py-2 px-4 w-full bg-primary/50 hover:border-primary border-primary/10 border-2 duration-100 text-white"
         onClick={() => saveSnippet(snippet)}
       >
         Save

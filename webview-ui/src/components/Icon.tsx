@@ -14,6 +14,7 @@ import { PiFileCSharpBold } from "react-icons/pi";
 import { IoCode, IoTerminal } from "react-icons/io5";
 import { FaPython, FaJava } from "react-icons/fa";
 import { TbSql, TbAssembly } from "react-icons/tb";
+import { FaXmarksLines } from "react-icons/fa6";
 
 const Icon = ({
   language,
@@ -109,6 +110,26 @@ const Icon = ({
       colorClass = "text-gray-700";
       backgroundColor = "bg-gray-700/30";
       icon = <TbAssembly className={`${size} ${colorClass}`} />;
+      break;
+    case "XML":
+      colorClass = "text-green-500";
+      backgroundColor = "bg-green-500/30";
+      icon = <FaXmarksLines className={`${size} ${colorClass}`} />;
+      break;
+    case "Markdown":
+      colorClass = "text-gray-500";
+      backgroundColor = "bg-gray-500/30";
+      icon = <FaXmarksLines className={`${size} ${colorClass}`} />;
+      break;
+    case "JSON":
+      colorClass = "text-yellow-500";
+      backgroundColor = "bg-yellow-500/30";
+      icon = <FaXmarksLines className={`${size} ${colorClass}`} />;
+      break;
+    case "YAML":
+      colorClass = "text-blue-500";
+      backgroundColor = "bg-blue-500/30";
+      icon = <FaXmarksLines className={`${size} ${colorClass}`} />;
       break;
     default:
       colorClass = "text-gray-500";
