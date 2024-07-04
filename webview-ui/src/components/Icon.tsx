@@ -18,8 +18,9 @@ import {
   SiScala,
   SiDart,
   SiCsharp,
+  SiC,
 } from "react-icons/si";
-import { PiFileCSharpBold } from "react-icons/pi";
+import { PiFileCSharpBold, PiFileCsv } from "react-icons/pi";
 import { IoDocumentTextOutline, IoTerminal } from "react-icons/io5";
 import { FaPython, FaJava } from "react-icons/fa";
 import { TbSql, TbAssembly } from "react-icons/tb";
@@ -177,6 +178,22 @@ export const Icon = (language: string, size = "text-sm") => {
       backgroundColor = "bg-blue-500/30";
       icon = <SiCsharp className={`${size} ${colorClass}`} />;
       break;
+    case "CSV":
+      colorClass = "text-green-400";
+      backgroundColor = "bg-green-500/30";
+      icon = <PiFileCsv className={`${size} ${colorClass}`} />;
+      break;
+    case "C":
+      colorClass = "text-purple-500";
+      backgroundColor = "bg-purple-500/30";
+      icon = <SiC className={`${size} ${colorClass}`} />;
+      break;
+    case "PowerShell":
+      colorClass = "text-blue-500";
+      backgroundColor = "bg-blue-500/30";
+      icon = <SiCsharp className={`${size} ${colorClass}`} />;
+      break;
+
     default:
       colorClass = "text-gray-500";
       backgroundColor = "bg-gray-500/30";

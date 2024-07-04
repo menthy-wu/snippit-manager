@@ -30,6 +30,8 @@ export const getLanguage = (path: string) => {
   if (path.endsWith(".vue")) return "Vue";
   if (path.endsWith(".svelte")) return "Svelte";
   if (path.endsWith(".cs")) return "Smalltalk";
+  if (path.endsWith(".csv")) return "CSV";
+  if (path.endsWith(".ps1")) return "PowerShell";
   return "plaintext";
 };
 export const changeExtenstion = (fileName: string, language: string) => {
@@ -70,4 +72,6 @@ export const extensionMap: { [key: string]: string } = {
   Vue: ".vue",
   Svelte: ".svelte",
   Smalltalk: ".cs",
+  CSV: ".csv",
+  PowerShell: ".ps1",
 };
