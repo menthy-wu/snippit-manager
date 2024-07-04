@@ -128,20 +128,7 @@ export const newSnippet = (extensionUri: Uri) => {
 };
 
 const storeAccessToken = async (device_code: string, extensionUri: Uri) => {
-  try {
-    const access_token = await getAccessToken(device_code);
-    const workspaceEdit = new WorkspaceEdit();
-    const tokenUri = Uri.joinPath(extensionUri, "data", "token");
-    workspaceEdit.createFile(tokenUri, { overwrite: true });
-    await workspace.applyEdit(workspaceEdit);
-    const encodedContent = new TextEncoder().encode(access_token);
-    await workspace.fs.writeFile(tokenUri, encodedContent);
-    commands.executeCommand("snippet-manager.reloadSnippets");
-  } catch (error) {
-    LoginPanel.render(extensionUri);
-    LoginPanel.postMessage({
-      command: "error",
-      body: "Authentication failed, please reload window",
-    });
-  }
+  const access_token = await getAccessToken(device_code);
+  States.globalState.update("token", access_token);
+  commands.executeCommand("snippet-manager.reloadSnippets");
 };

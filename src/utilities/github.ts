@@ -41,10 +41,8 @@ export const getAccessToken = async (device_code: string) => {
 };
 
 export const importAccessToken = async (extensionUri: Uri) => {
-  const tokenUri = Uri.joinPath(extensionUri, "data", "token");
   try {
-    const data = await workspace.fs.readFile(tokenUri);
-    const content = new TextDecoder().decode(data);
+    const content = States.globalState.get("token", "");
     if (content == "") {
       login(extensionUri);
     }
