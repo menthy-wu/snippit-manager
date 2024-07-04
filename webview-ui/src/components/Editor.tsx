@@ -24,7 +24,6 @@ const Editor = () => {
     fileName: "",
     url: "",
   });
-  const [language, setLanguage] = useState<string>("");
   const { theme, setTheme } = useTheme();
   const handleListener = (event: MessageEvent) => {
     const data = event.data;
@@ -55,7 +54,6 @@ const Editor = () => {
         value={snippet.title}
         onChange={(e: React.FormEvent<HTMLInputElement>) => {
           const language = getLanguage(e.currentTarget.value);
-          setLanguage(language.toLowerCase());
           setSnippet({
             ...snippet,
             category: language,
@@ -85,6 +83,7 @@ const Editor = () => {
         label="Category"
         placeholder="Text"
         className="w-full"
+        inputValue={snippet.category}
         allowsCustomValue={true}
         onSelect={(item) =>
           setSnippet({
@@ -105,10 +104,10 @@ const Editor = () => {
       </div>
       <CodeEditor
         value={snippet.snippet}
-        language={language}
+        language={snippet.category.toLowerCase()}
         theme={theme === "dark" ? "vs-dark" : "light"}
         onChange={(e) => setSnippet({ ...snippet, snippet: e || "" })}
-        className="bg-editor-input-background !rounded-lg overflow-hidden h-full"
+        className="border-gray-400/30 border-2"
         options={{
           automaticLayout: true,
           minimap: { enabled: false },

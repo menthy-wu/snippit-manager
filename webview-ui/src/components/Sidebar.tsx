@@ -59,6 +59,7 @@ const Sidebar = () => {
             searchVal={searchVal}
             category={category}
             snippets={snippets}
+            publicSnippet={mode === "Public"}
           />
         </ScrollShadow>
       )}

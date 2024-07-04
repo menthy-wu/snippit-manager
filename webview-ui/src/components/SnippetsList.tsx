@@ -6,10 +6,12 @@ const SnippetsList = ({
   searchVal,
   category,
   snippets,
+  publicSnippet,
 }: {
   searchVal: string;
   category: string;
   snippets: SnippetProps[] | [];
+  publicSnippet: boolean;
 }) => {
   const filteredSnippets = Object.keys(snippets).length
     ? (Object.values(snippets) as SnippetProps[]).filter(
@@ -24,13 +26,8 @@ const SnippetsList = ({
         filteredSnippets.map((snippet: SnippetProps, index: number) => (
           <Snippet
             key={index}
-            title={snippet.title}
-            description={snippet.description}
-            snippet={snippet.snippet}
-            id={snippet.id}
-            category={snippet.category}
-            fileName={snippet.fileName}
-            url={snippet.url}
+            snippet={snippet}
+            publicSnippet={publicSnippet}
           />
         ))
       ) : (

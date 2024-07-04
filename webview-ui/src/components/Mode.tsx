@@ -42,7 +42,7 @@ const Mode = ({
 }) => {
   return (
     <ButtonGroup fullWidth={true}>
-      {["Mine", "Public", "Local"].map((label, index) => (
+      {["Mine", "Public"].map((label, index) => (
         <SingleButton
           key={index}
           label={label}

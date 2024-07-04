@@ -84,7 +84,7 @@ export const getUserSnippets = async (uri: Uri) => {
   //     window.showErrorMessage("Fail loading snippets!");
   //   }
   // }
-  const url = "https://api.github.com/gists?per_page=100";
+  const url = "https://api.github.com/gists?per_page=50";
   const response = await fetch(url, {
     method: "GET",
     headers: { Authorization: `token ${token}`, Accept: "application/json" },
@@ -210,7 +210,7 @@ export const getPublicSnippets = async (uri: Uri) => {
     });
     return;
   }
-  const url = "https://api.github.com/gists/public?per_page=100";
+  const url = "https://api.github.com/gists/public?per_page50";
   const response = await fetch(url, {
     method: "GET",
     headers: { Authorization: `token ${token}`, Accept: "application/json" },

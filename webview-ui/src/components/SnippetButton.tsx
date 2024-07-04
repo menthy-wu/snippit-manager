@@ -4,8 +4,15 @@ import { SnippetProps } from "../utilities/types";
 import "../index.css";
 import Icon from "./Icon";
 import { Button } from "@nextui-org/react";
+import { BiDownload } from "react-icons/bi";
 
-const Snippet = (snippet: SnippetProps) => {
+const Snippet = ({
+  snippet,
+  publicSnippet = false,
+}: {
+  snippet: SnippetProps;
+  publicSnippet?: boolean;
+}) => {
   return (
     <Button
       size="lg"
@@ -13,14 +20,23 @@ const Snippet = (snippet: SnippetProps) => {
       className="hover:border-primary border-[1px] border-transparent hover:bg-primary/40"
       endContent={
         <div className="flex gap-1">
-          <LuPencil
-            className="text-editorHint-foreground text-sm group-hover:opacity-100 opacity-0 duration-200 hover:text-primary"
-            onClick={() => editSnippet(snippet)}
-          />
-          <LuTrash
-            className="text-editorHint-foreground text-sm group-hover:opacity-100 opacity-0 duration-200 hover:text-red"
-            onClick={() => deleteSnippet(snippet.id)}
-          />
+          {publicSnippet ? (
+            <BiDownload
+              className="text-editorHint-foreground text-sm group-hover:opacity-100 opacity-0 duration-200 hover:text-teal-300"
+              onClick={() => editSnippet({ ...snippet, id: "" })}
+            />
+          ) : (
+            <>
+              <LuPencil
+                className="text-editorHint-foreground text-sm group-hover:opacity-100 opacity-0 duration-200 hover:text-primary"
+                onClick={() => editSnippet(snippet)}
+              />
+              <LuTrash
+                className="text-editorHint-foreground text-sm group-hover:opacity-100 opacity-0 duration-200 hover:text-red"
+                onClick={() => deleteSnippet(snippet.id)}
+              />
+            </>
+          )}
         </div>
       }
       startContent={
