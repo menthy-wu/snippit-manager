@@ -1,13 +1,15 @@
 import { IoIosSearch, IoIosRefresh } from "react-icons/io";
-import { newSnippept, reload } from "../utilities/actions";
+import { hardReload, newSnippept } from "../utilities/actions";
 import "../index.css";
 import { MdAdd } from "react-icons/md";
 import { Input, Button } from "@nextui-org/react";
 
 const Searchbar = ({
   searchVal,
+  mode,
   setSearchVal,
 }: {
+  mode: string;
   searchVal: string;
   setSearchVal: React.Dispatch<React.SetStateAction<string>>;
 }) => {
@@ -26,7 +28,12 @@ const Searchbar = ({
       <Button onClick={newSnippept} isIconOnly variant="light" color="primary">
         <MdAdd />
       </Button>
-      <Button onClick={reload} isIconOnly variant="light" color="primary">
+      <Button
+        onClick={() => hardReload(mode)}
+        isIconOnly
+        variant="light"
+        color="primary"
+      >
         <IoIosRefresh className="text-editorHint-foreground" />
       </Button>
     </div>

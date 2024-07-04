@@ -10,8 +10,15 @@ import {
 import { EditorPanel } from "../EditorPanel";
 import * as fs from "fs";
 import { SnippetProps } from "../../webview-ui/src/utilities/types";
-import { deleteSnippet, getSnippetContent, saveSnippet } from "./github";
+import {
+  deleteSnippet,
+  getPublicSnippets,
+  getSnippetContent,
+  reloadPublicSnippets,
+  saveSnippet,
+} from "./github";
 import { LoginPanel } from "../LoginPanel";
+import { States } from "../States";
 
 export const setWebviewMessageListener = (
   webview: Webview,
@@ -41,7 +48,14 @@ export const setWebviewMessageListener = (
         window.showErrorMessage(`Invalid snippet: ${body}`);
         break;
       case "reload":
-        commands.executeCommand("snippet-manager.reloadSnippets");
+        if (body === "Mine") {
+          commands.executeCommand("snippet-manager.reloadSnippets");
+        } else getPublicSnippets(extensionUri);
+        break;
+      case "hard-reload":
+        if (body === "Mine") {
+          commands.executeCommand("snippet-manager.reloadSnippets");
+        } else reloadPublicSnippets(extensionUri);
         break;
       case "load-public-gists":
         commands.executeCommand("snippet-manager.loadPublicSnippets");
@@ -51,6 +65,18 @@ export const setWebviewMessageListener = (
         break;
       case "reload-window":
         commands.executeCommand("workbench.action.reloadWindow");
+        break;
+      case "next-page":
+        States.workspaceState.update(
+          "page",
+          States.workspaceState.get("page", 0) + 1,
+        );
+        break;
+      case "last-page":
+        States.workspaceState.update(
+          "page",
+          States.workspaceState.get("page", 0) + 1,
+        );
         break;
     }
   });

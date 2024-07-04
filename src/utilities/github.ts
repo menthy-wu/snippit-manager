@@ -5,6 +5,7 @@ import { Uri, WorkspaceEdit, commands, workspace, Memento } from "vscode";
 import { SnippetProps } from "../../webview-ui/src/utilities/types";
 import { EditorPanel } from "../EditorPanel";
 import { SidebarProvider } from "../SidebarProvider";
+import { States } from "../States";
 
 export const login = async (extensionUri: Uri) => {
   dotenv.config({ path: Uri.joinPath(extensionUri, ".env").fsPath });
@@ -49,7 +50,6 @@ export const importAccessToken = async (extensionUri: Uri) => {
   try {
     const data = await workspace.fs.readFile(tokenUri);
     const content = new TextDecoder().decode(data);
-    console.log("access token", content);
     if (!content) {
       workspace.fs.delete(tokenUri);
       login(extensionUri);
@@ -60,8 +60,58 @@ export const importAccessToken = async (extensionUri: Uri) => {
     return "";
   }
 };
-
+export const getLocalSnippets = () => {
+  const snippets = States.globalState.get("snippets", []);
+  if (snippets.length <= 0) {
+    return;
+  }
+  const categories = [
+    ...new Set(snippets.map((snippet: SnippetProps) => snippet.category)),
+  ];
+  SidebarProvider.postMessage({
+    command: "reload-snippets",
+    body: { categories, snippets, type: "Mine" },
+  });
+  EditorPanel.postMessage({
+    command: "reload-snippets",
+    body: { categories, snippets, type: "Mine" },
+  });
+  return true;
+};
+export const getLocalPublicSnippets = () => {
+  const snippets = States.globalState.get("publicSnippets", []);
+  if (snippets.length <= 0) {
+    return false;
+  }
+  const categories = [
+    ...new Set(snippets.map((snippet: SnippetProps) => snippet.category)),
+  ];
+  SidebarProvider.postMessage({
+    command: "reload-snippets",
+    body: { categories, snippets, type: "Public" },
+  });
+  EditorPanel.postMessage({
+    command: "reload-snippets",
+    body: { categories, snippets, type: "Public" },
+  });
+  return true;
+};
+export const saveLocalSnippet = (
+  snippet: SnippetProps[],
+  categories: string[],
+) => {
+  States.globalState.update("snippets", snippet);
+  States.globalState.update("categories", categories);
+};
+export const saveLocaPubliclSnippet = (
+  snippet: SnippetProps[],
+  categories: string[],
+) => {
+  States.globalState.update("publicSnippets", snippet);
+  States.globalState.update("publicCategories", categories);
+};
 export const getUserSnippets = async (uri: Uri) => {
+  getLocalSnippets();
   const token = await importAccessToken(uri);
   if (!token) {
     LoginPanel.render(uri);
@@ -71,13 +121,13 @@ export const getUserSnippets = async (uri: Uri) => {
     });
     return;
   }
-  const url = "https://api.github.com/gists?per_page=50";
+  const page = States.workspaceState.get("page", 1);
+  const url = `https://api.github.com/gists?per_page=50&page=${page}`;
   const response = await fetch(url, {
     method: "GET",
     headers: { Authorization: `token ${token}`, Accept: "application/json" },
   });
   const data = (await response.json()) as any[];
-
   const snippets = data.map((gist: any) => {
     const file = Object.values(gist.files)[0] as any;
     return {
@@ -91,6 +141,10 @@ export const getUserSnippets = async (uri: Uri) => {
     };
   });
   const categories = [...new Set(snippets.map((snippet) => snippet.category))];
+  if (snippets.length === 0) {
+    return;
+  }
+  saveLocalSnippet(snippets, categories);
   SidebarProvider.postMessage({
     command: "reload-snippets",
     body: { categories, snippets, type: "Mine" },
@@ -99,14 +153,7 @@ export const getUserSnippets = async (uri: Uri) => {
     command: "reload-snippets",
     body: { categories, snippets, type: "Mine" },
   });
-  const results = { categories, snippets };
-  const workspaceEdit = new WorkspaceEdit();
-  const snippetsUri = Uri.joinPath(uri, "data", "snippets.json");
-  workspaceEdit.createFile(snippetsUri, { overwrite: true });
-  await workspace.applyEdit(workspaceEdit);
-  const encodedContent = new TextEncoder().encode(JSON.stringify(results));
-  await workspace.fs.writeFile(snippetsUri, encodedContent);
-  return results;
+  return { categories, snippets };
 };
 
 export const getSnippetContent = async (snippetURL: string) => {
@@ -187,8 +234,10 @@ export const deleteSnippet = async (uri: Uri, snippetId: string) => {
   });
   commands.executeCommand("snippet-manager.reloadSnippets");
 };
-
-export const getPublicSnippets = async (uri: Uri) => {
+export const getPublicSnippets = (uri: Uri) => {
+  if (!getLocalPublicSnippets()) reloadPublicSnippets(uri);
+};
+export const reloadPublicSnippets = async (uri: Uri) => {
   const token = await importAccessToken(uri);
   if (!token) {
     SidebarProvider.postMessage({
@@ -225,12 +274,6 @@ export const getPublicSnippets = async (uri: Uri) => {
     command: "reload-snippets",
     body: { categories, snippets, type: "Public" },
   });
-  const results = { categories, snippets };
-  const workspaceEdit = new WorkspaceEdit();
-  const snippetsUri = Uri.joinPath(uri, "data", "snippets.json");
-  workspaceEdit.createFile(snippetsUri, { overwrite: true });
-  await workspace.applyEdit(workspaceEdit);
-  const encodedContent = new TextEncoder().encode(JSON.stringify(results));
-  await workspace.fs.writeFile(snippetsUri, encodedContent);
-  return results;
+  saveLocaPubliclSnippet(snippets, categories);
+  return { categories, snippets };
 };

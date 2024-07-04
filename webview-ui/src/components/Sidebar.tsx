@@ -43,7 +43,11 @@ const Sidebar = () => {
   return (
     <div className="w-full h-screen flex flex-col gap-3 py-3">
       <div className="w-full flex flex-col gap-2">
-        <Searchbar searchVal={searchVal} setSearchVal={setSearchVal} />
+        <Searchbar
+          searchVal={searchVal}
+          setSearchVal={setSearchVal}
+          mode={mode}
+        />
         <Mode mode={mode} setMode={setMode} setLoading={setLoading} />
         <Filter
           category={category}

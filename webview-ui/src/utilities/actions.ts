@@ -1,9 +1,17 @@
 import { SnippetProps } from "./types";
 import { vscode } from "./vscode";
 
-export const reload = () => {
+export const hardReload = (mode = "Mine") => {
+  vscode.postMessage({
+    command: "hard-reload",
+    body: mode,
+  });
+};
+
+export const reload = (mode = "Mine") => {
   vscode.postMessage({
     command: "reload",
+    body: mode,
   });
 };
 
