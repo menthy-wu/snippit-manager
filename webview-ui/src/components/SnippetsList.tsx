@@ -35,14 +35,11 @@ const SnippetsList = ({
         ))
       ) : (
         <>
-          {" "}
-          <div className="text-gray-300 text-center">No snippets found</div>
           <Button
             onClick={newSnippept}
             className="self-center"
             endContent={<MdAdd />}
           >
-            {" "}
             Add New
           </Button>
         </>

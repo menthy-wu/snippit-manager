@@ -19,6 +19,7 @@ import {
   SiDart,
   SiCsharp,
   SiC,
+  SiSvg,
 } from "react-icons/si";
 import { PiFileCSharpBold, PiFileCsv } from "react-icons/pi";
 import { IoDocumentTextOutline, IoTerminal } from "react-icons/io5";
@@ -193,7 +194,11 @@ export const Icon = (language: string, size = "text-sm") => {
       backgroundColor = "bg-blue-500/30";
       icon = <SiCsharp className={`${size} ${colorClass}`} />;
       break;
-
+    case "SVG":
+      colorClass = "text-green-500";
+      backgroundColor = "bg-green-500/30";
+      icon = <SiSvg className={`${size} ${colorClass}`} />;
+      break;
     default:
       colorClass = "text-gray-500";
       backgroundColor = "bg-gray-500/30";

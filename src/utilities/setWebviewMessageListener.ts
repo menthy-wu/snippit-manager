@@ -128,10 +128,8 @@ export const newSnippet = (extensionUri: Uri) => {
 };
 
 const storeAccessToken = async (device_code: string, extensionUri: Uri) => {
-  console.log("device code", device_code);
   try {
     const access_token = await getAccessToken(device_code);
-    console.log("access_token", access_token);
     const workspaceEdit = new WorkspaceEdit();
     const tokenUri = Uri.joinPath(extensionUri, "data", "token");
     workspaceEdit.createFile(tokenUri, { overwrite: true });

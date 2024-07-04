@@ -57,7 +57,7 @@ export const importAccessToken = async (extensionUri: Uri) => {
 export const getLocalSnippets = () => {
   const snippets = States.globalState.get("snippets", []);
   if (snippets.length <= 0) {
-    return;
+    return false;
   }
   const categories = [
     ...new Set(snippets.map((snippet: SnippetProps) => snippet.category)),
@@ -121,7 +121,6 @@ export const getUserSnippets = async (uri: Uri) => {
     method: "GET",
     headers: { Authorization: `token ${token}`, Accept: "application/json" },
   });
-  console.log("response hahahah", response.status);
   const data = (await response.json()) as any[];
   const snippets = data.map((gist: any) => {
     const file = Object.values(gist.files)[0] as any;
@@ -136,9 +135,6 @@ export const getUserSnippets = async (uri: Uri) => {
     };
   });
   const categories = [...new Set(snippets.map((snippet) => snippet.category))];
-  if (snippets.length === 0) {
-    return;
-  }
   saveLocalSnippet(snippets, categories);
   SidebarProvider.postMessage({
     command: "reload-snippets",

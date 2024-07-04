@@ -33,6 +33,8 @@ export const getLanguage = (path: string) => {
   if (path.endsWith(".csv")) return "CSV";
   if (path.endsWith(".ps1")) return "PowerShell";
   if (path.endsWith(".tsx")) return "TypeScript";
+  if (path.endsWith(".jsx")) return "JavaScript";
+  if (path.endsWith(".svg")) return "SVG";
   return "plaintext";
 };
 export const changeExtenstion = (fileName: string, language: string) => {
@@ -75,4 +77,5 @@ export const extensionMap: { [key: string]: string } = {
   Smalltalk: ".cs",
   CSV: ".csv",
   PowerShell: ".ps1",
+  SVG: ".svg",
 };
