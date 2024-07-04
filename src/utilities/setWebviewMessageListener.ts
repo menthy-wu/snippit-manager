@@ -11,6 +11,7 @@ import { EditorPanel } from "../EditorPanel";
 import * as fs from "fs";
 import { SnippetProps } from "../../webview-ui/src/utilities/types";
 import { deleteSnippet, getSnippetContent, saveSnippet } from "./github";
+import { LoginPanel } from "../LoginPanel";
 
 export const setWebviewMessageListener = (
   webview: Webview,
@@ -44,6 +45,12 @@ export const setWebviewMessageListener = (
         break;
       case "load-public-gists":
         commands.executeCommand("snippet-manager.loadPublicSnippets");
+        break;
+      case "close-window":
+        LoginPanel.currentPanel?.dispose();
+        break;
+      case "reload-window":
+        commands.executeCommand("workbench.action.reloadWindow");
         break;
     }
   });

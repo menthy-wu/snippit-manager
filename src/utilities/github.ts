@@ -1,15 +1,7 @@
 import open from "open";
 import dotenv from "dotenv";
 import { LoginPanel } from "../LoginPanel";
-import {
-  Position,
-  Uri,
-  Webview,
-  WorkspaceEdit,
-  commands,
-  window,
-  workspace,
-} from "vscode";
+import { Uri, WorkspaceEdit, commands, workspace, Memento } from "vscode";
 import { SnippetProps } from "../../webview-ui/src/utilities/types";
 import { EditorPanel } from "../EditorPanel";
 import { SidebarProvider } from "../SidebarProvider";
@@ -57,6 +49,11 @@ export const importAccessToken = async (extensionUri: Uri) => {
   try {
     const data = await workspace.fs.readFile(tokenUri);
     const content = new TextDecoder().decode(data);
+    console.log("access token", content);
+    if (!content) {
+      workspace.fs.delete(tokenUri);
+      login(extensionUri);
+    }
     return content;
   } catch (error) {
     login(extensionUri);
@@ -67,23 +64,13 @@ export const importAccessToken = async (extensionUri: Uri) => {
 export const getUserSnippets = async (uri: Uri) => {
   const token = await importAccessToken(uri);
   if (!token) {
-    SidebarProvider.postMessage({
+    LoginPanel.render(uri);
+    LoginPanel.postMessage({
       command: "error",
       body: "Authentication failed, please reload window",
     });
     return;
   }
-  // if (!token) {
-  //   const snippetUri = Uri.joinPath(uri, "data", "snippets.json");
-  //   try {
-  //     const data = await workspace.fs.readFile(snippetUri);
-  //     const content = new TextDecoder().decode(data);
-  //     const snippetsData = JSON.parse(content);
-  //     return snippetsData;
-  //   } catch (error) {
-  //     window.showErrorMessage("Fail loading snippets!");
-  //   }
-  // }
   const url = "https://api.github.com/gists?per_page=50";
   const response = await fetch(url, {
     method: "GET",

@@ -7,7 +7,7 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
-import Icon from "./Icon";
+import { Icon } from "./Icon";
 import { MdCancel } from "react-icons/md";
 
 const Filter = ({
@@ -73,7 +73,7 @@ const Filter = ({
         >
           {options.map((option, index) => (
             <DropdownItem
-              startContent={<Icon language={option} />}
+              startContent={Icon(option).icon}
               key={index}
               onClick={() => {
                 setcategory(option);

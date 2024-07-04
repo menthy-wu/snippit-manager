@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import Verification from "./Verification";
+import Error from "./Error";
 
 const Login = () => {
   const [userCode, setUserCode] = useState<string>("");
@@ -11,6 +13,9 @@ const Login = () => {
     }
     if (data.command === "set-theme") {
       setTheme(data.body === 2 ? "dark" : "light");
+    }
+    if (data.command === "error") {
+      setUserCode("");
     }
   };
   useEffect(() => {
@@ -25,13 +30,7 @@ const Login = () => {
     };
   }, []);
 
-  return (
-    <div>
-      {userCode
-        ? `Login github use this code ${userCode}`
-        : "something went wrong, please reload window"}
-    </div>
-  );
+  return <div>{userCode ? <Verification code={userCode} /> : <Error />}</div>;
 };
 
 export default Login;

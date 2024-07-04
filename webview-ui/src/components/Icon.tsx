@@ -26,16 +26,7 @@ import { TbSql, TbAssembly } from "react-icons/tb";
 import { FaVuejs, FaXmarksLines } from "react-icons/fa6";
 import { BsMarkdown } from "react-icons/bs";
 
-const Icon = ({
-  language,
-  size = "text-sm",
-  circle = false,
-}: {
-  language: string;
-  size?: string;
-  color?: string;
-  circle?: boolean;
-}) => {
+export const Icon = (language: string, size = "text-sm") => {
   let colorClass;
   let backgroundColor;
   let icon;
@@ -191,15 +182,5 @@ const Icon = ({
       backgroundColor = "bg-gray-500/30";
       icon = <IoDocumentTextOutline className={`${size} ${colorClass}`} />;
   }
-  return circle ? (
-    <div
-      className={`flex aspect-square rounded-full items-center justify-center p-3 ${backgroundColor}`}
-    >
-      {icon}
-    </div>
-  ) : (
-    icon
-  );
+  return { icon: icon, color: "colorClass", backgroundColor: backgroundColor };
 };
-
-export default Icon;

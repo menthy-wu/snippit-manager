@@ -2,7 +2,7 @@ import { LuPencil, LuTrash } from "react-icons/lu";
 import { editSnippet, callSnippet, deleteSnippet } from "../utilities/actions";
 import { SnippetProps } from "../utilities/types";
 import "../index.css";
-import Icon from "./Icon";
+import { Icon } from "./Icon";
 import { Button } from "@nextui-org/react";
 import { BiDownload } from "react-icons/bi";
 
@@ -13,11 +13,20 @@ const Snippet = ({
   snippet: SnippetProps;
   publicSnippet?: boolean;
 }) => {
+  const icon = Icon(snippet.category, "text-xl");
+
   return (
     <Button
       size="lg"
       variant="flat"
-      className="hover:border-primary border-[1px] border-transparent hover:bg-primary/40"
+      className="pl-0 hover:border-primary border-[1px] border-transparent hover:bg-primary/40 overflow-hidden justify-between"
+      startContent={
+        <div
+          className={`${icon.backgroundColor} h-full px-3 flex items-center`}
+        >
+          {icon.icon}
+        </div>
+      }
       endContent={
         <div className="flex gap-1">
           {publicSnippet ? (
@@ -38,9 +47,6 @@ const Snippet = ({
             </>
           )}
         </div>
-      }
-      startContent={
-        <Icon size="text-xl" language={snippet.category} circle={true} />
       }
     >
       <div

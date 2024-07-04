@@ -1,6 +1,9 @@
 import Snippet from "./SnippetButton";
 import "../index.css";
 import { SnippetProps } from "../utilities/types";
+import { Button } from "@nextui-org/react";
+import { MdAdd } from "react-icons/md";
+import { newSnippept } from "../utilities/actions";
 
 const SnippetsList = ({
   searchVal,
@@ -31,7 +34,18 @@ const SnippetsList = ({
           />
         ))
       ) : (
-        <div className="text-gray-300 text-center">No snippets found</div>
+        <>
+          {" "}
+          <div className="text-gray-300 text-center">No snippets found</div>
+          <Button
+            onClick={newSnippept}
+            className="self-center"
+            endContent={<MdAdd />}
+          >
+            {" "}
+            Add New
+          </Button>
+        </>
       )}
     </div>
   );

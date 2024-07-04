@@ -19,6 +19,17 @@ export const editSnippet = (snippet: SnippetProps) => {
   });
 };
 
+export const closeWindow = () => {
+  vscode.postMessage({
+    command: "close-window",
+  });
+};
+export const reloadWindow = () => {
+  vscode.postMessage({
+    command: "reload-window",
+  });
+};
+
 export const callSnippet = (snippet: string) => {
   vscode.postMessage({
     command: "call-snippet",
