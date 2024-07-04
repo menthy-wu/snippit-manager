@@ -32,6 +32,7 @@ export const getLanguage = (path: string) => {
   if (path.endsWith(".cs")) return "Smalltalk";
   if (path.endsWith(".csv")) return "CSV";
   if (path.endsWith(".ps1")) return "PowerShell";
+  if (path.endsWith(".tsx")) return "TypeScript";
   return "plaintext";
 };
 export const changeExtenstion = (fileName: string, language: string) => {

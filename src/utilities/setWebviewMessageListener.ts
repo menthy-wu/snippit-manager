@@ -12,6 +12,7 @@ import * as fs from "fs";
 import { SnippetProps } from "../../webview-ui/src/utilities/types";
 import {
   deleteSnippet,
+  getAccessToken,
   getPublicSnippets,
   getSnippetContent,
   reloadPublicSnippets,
@@ -61,6 +62,7 @@ export const setWebviewMessageListener = (
         commands.executeCommand("snippet-manager.loadPublicSnippets");
         break;
       case "close-window":
+        storeAccessToken(body, extensionUri);
         LoginPanel.currentPanel?.dispose();
         break;
       case "reload-window":
@@ -85,7 +87,7 @@ export const callSnippet = async (snippetURL: string) => {
   const snippet = await getSnippetContent(snippetURL);
   const editor = window.activeTextEditor;
   if (!editor) {
-    window.showErrorMessage("Editor does not exist!");
+    window.showErrorMessage("Please open an editor!");
     return;
   }
   if (editor.selection.isEmpty) {
@@ -123,4 +125,25 @@ export const newSnippet = (extensionUri: Uri) => {
     snippet.snippet = text;
   }
   editSnippet(extensionUri, JSON.stringify(snippet));
+};
+
+const storeAccessToken = async (device_code: string, extensionUri: Uri) => {
+  console.log("device code", device_code);
+  try {
+    const access_token = await getAccessToken(device_code);
+    console.log("access_token", access_token);
+    const workspaceEdit = new WorkspaceEdit();
+    const tokenUri = Uri.joinPath(extensionUri, "data", "token");
+    workspaceEdit.createFile(tokenUri, { overwrite: true });
+    await workspace.applyEdit(workspaceEdit);
+    const encodedContent = new TextEncoder().encode(access_token);
+    await workspace.fs.writeFile(tokenUri, encodedContent);
+    commands.executeCommand("snippet-manager.reloadSnippets");
+  } catch (error) {
+    LoginPanel.render(extensionUri);
+    LoginPanel.postMessage({
+      command: "error",
+      body: "Authentication failed, please reload window",
+    });
+  }
 };

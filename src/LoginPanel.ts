@@ -68,7 +68,6 @@ export class LoginPanel {
   }
 
   public dispose() {
-    this.storeAccessToken();
     LoginPanel.currentPanel = undefined;
     this._panel.dispose();
     while (this._disposables.length) {
@@ -78,23 +77,4 @@ export class LoginPanel {
       }
     }
   }
-  private storeAccessToken = async () => {
-    try {
-      const access_token = await getAccessToken(
-        LoginPanel.device_code,
-        this.extensionUri,
-      );
-      const workspaceEdit = new WorkspaceEdit();
-      const tokenUri = Uri.joinPath(this.extensionUri, "data", "token");
-      workspaceEdit.createFile(tokenUri, { overwrite: true });
-      await workspace.applyEdit(workspaceEdit);
-      const encodedContent = new TextEncoder().encode(access_token);
-      await workspace.fs.writeFile(tokenUri, encodedContent);
-    } catch (error) {
-      window.showErrorMessage(
-        "Cannot store access token please reload window!",
-      );
-    }
-    commands.executeCommand("snippet-manager.reloadSnippets");
-  };
 }

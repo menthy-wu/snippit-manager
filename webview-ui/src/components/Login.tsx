@@ -5,11 +5,13 @@ import Error from "./Error";
 
 const Login = () => {
   const [userCode, setUserCode] = useState<string>("");
+  const [deviceCode, setDeviceCode] = useState<string>("");
   const { setTheme } = useTheme();
   const handleListener = (event: MessageEvent) => {
     const data = event.data;
     if (data.command === "login") {
       setUserCode(data.body.user_code);
+      setDeviceCode(data.body.device_code);
     }
     if (data.command === "set-theme") {
       setTheme(data.body === 2 ? "dark" : "light");
@@ -30,7 +32,15 @@ const Login = () => {
     };
   }, []);
 
-  return <div>{userCode ? <Verification code={userCode} /> : <Error />}</div>;
+  return (
+    <div>
+      {userCode ? (
+        <Verification code={userCode} deviceCode={deviceCode} />
+      ) : (
+        <Error />
+      )}
+    </div>
+  );
 };
 
 export default Login;

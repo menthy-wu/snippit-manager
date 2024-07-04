@@ -1,5 +1,5 @@
 import open from "open";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import { LoginPanel } from "../LoginPanel";
 import { Uri, WorkspaceEdit, commands, workspace, Memento } from "vscode";
 import { SnippetProps } from "../../webview-ui/src/utilities/types";
@@ -8,7 +8,6 @@ import { SidebarProvider } from "../SidebarProvider";
 import { States } from "../States";
 
 export const login = async (extensionUri: Uri) => {
-  dotenv.config({ path: Uri.joinPath(extensionUri, ".env").fsPath });
   const clientID = process.env.CLIENT_ID;
   const url = `https://github.com/login/device/code?client_id=${clientID}&scope=gist`;
   const deviceRes = await fetch(url, {
@@ -25,16 +24,12 @@ export const login = async (extensionUri: Uri) => {
   LoginPanel.device_code = device_code;
   LoginPanel.postMessage({
     command: "login",
-    body: { user_code: user_code },
+    body: { user_code: user_code, device_code: device_code },
   });
   open(verification_uri);
 };
 
-export const getAccessToken = async (
-  device_code: string,
-  extensionUri: Uri,
-) => {
-  dotenv.config({ path: Uri.joinPath(extensionUri, ".env").fsPath });
+export const getAccessToken = async (device_code: string) => {
   const clientID = process.env.CLIENT_ID;
   const url = `https://github.com/login/oauth/access_token?client_id=${clientID}&device_code=${device_code}&grant_type=urn:ietf:params:oauth:grant-type:device_code`;
   const deviceRes = await fetch(url, {
@@ -50,8 +45,7 @@ export const importAccessToken = async (extensionUri: Uri) => {
   try {
     const data = await workspace.fs.readFile(tokenUri);
     const content = new TextDecoder().decode(data);
-    if (!content) {
-      workspace.fs.delete(tokenUri);
+    if (content == "") {
       login(extensionUri);
     }
     return content;
@@ -127,6 +121,7 @@ export const getUserSnippets = async (uri: Uri) => {
     method: "GET",
     headers: { Authorization: `token ${token}`, Accept: "application/json" },
   });
+  console.log("response hahahah", response.status);
   const data = (await response.json()) as any[];
   const snippets = data.map((gist: any) => {
     const file = Object.values(gist.files)[0] as any;

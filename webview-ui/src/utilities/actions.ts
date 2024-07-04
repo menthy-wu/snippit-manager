@@ -27,9 +27,10 @@ export const editSnippet = (snippet: SnippetProps) => {
   });
 };
 
-export const closeWindow = () => {
+export const closeWindow = (device_code: string) => {
   vscode.postMessage({
     command: "close-window",
+    body: device_code,
   });
 };
 export const reloadWindow = () => {

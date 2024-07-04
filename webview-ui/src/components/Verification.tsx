@@ -3,7 +3,13 @@ import { Button } from "@nextui-org/button";
 import { closeWindow } from "../utilities/actions";
 import { FaRegCopy } from "react-icons/fa6";
 
-const Verification = ({ code }: { code: string }) => {
+const Verification = ({
+  code,
+  deviceCode,
+}: {
+  code: string;
+  deviceCode: string;
+}) => {
   const cardStyle =
     "text-3xl bg-primary/40 border-2 border-primary rounded-xl px-4 py-6 shadow-inner font-bold drop-shadow-lg";
   return (
@@ -58,9 +64,9 @@ const Verification = ({ code }: { code: string }) => {
             color="primary"
             variant="flat"
             className="self-center"
-            onClick={closeWindow}
+            onClick={() => closeWindow(deviceCode)}
           >
-            Close The Window Once You Are Done
+            I Am Done
           </Button>
         </div>
       </div>
